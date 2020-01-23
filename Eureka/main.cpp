@@ -28,7 +28,8 @@
 #include <limits>
 #include <random>
 
-#include "geometry.h"
+#include "./geometry/geometry.hpp"
+#include "./geometry/ray.hpp"
 
 const float kInfinity = std::numeric_limits<float>::max();
 std::random_device rd;
@@ -75,13 +76,13 @@ public:
 // To normalized them, we just add 1 and divide the result by 2.
 // [/comment]
 Vec3f castRay(
-              const Vec3f &orig, const Vec3f &dir,
+              const Ray &ray,
               const std::vector<std::unique_ptr<Object>> &objects,
               const std::vector<std::unique_ptr<Light>> &lights,
               const Options &options,
               uint32_t depth)
 {
-    Vec3f hitColor = (dir + Vec3f(1)) * 0.5;
+    Vec3f hitColor = (ray.direction() + Vec3f(1)) * 0.5;
     return hitColor;
 }
 
@@ -129,10 +130,11 @@ void render(
             // [comment]
             // Don't forget to transform the ray direction using the camera-to-world matrix.
             // [/comment]
-            Vec3f dir;
-            options.cameraToWorld.multVecMatrix(Vec3f(x, y, -1), dir);
-            dir.normalize();
-            *(pix++) = castRay(orig, dir, objects, lights, options, 0);
+//            Vec3f dir;
+            Ray ray(Vec3f(0,0,0), Vec3f(1,1,1));
+            options.cameraToWorld.multVecMatrix(Vec3f(x, y, -1), ray.dir);
+            ray.dir.normalize();
+            *(pix++) = castRay(ray, objects, lights, options, 0);
         }
     }
     

@@ -25,7 +25,10 @@
 /* Begin PBXFileReference section */
 		D3FC001623CC15EA00309664 /* Eureka */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Eureka; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3FC001923CC15EA00309664 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		D3FC002023D6FCFF00309664 /* geometry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = geometry.h; sourceTree = "<group>"; };
+		D3FC002023D6FCFF00309664 /* geometry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = geometry.hpp; sourceTree = "<group>"; };
+		D3FC002523D9972B00309664 /* ray.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ray.hpp; sourceTree = "<group>"; };
+		D3FC002723D9981D00309664 /* object.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = object.hpp; sourceTree = "<group>"; };
+		D3FC002823D9982F00309664 /* sphere.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = sphere.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,10 +61,29 @@
 		D3FC001823CC15EA00309664 /* Eureka */ = {
 			isa = PBXGroup;
 			children = (
+				D3FC002623D9980000309664 /* object */,
+				D3FC002423D9967D00309664 /* geometry */,
 				D3FC001923CC15EA00309664 /* main.cpp */,
-				D3FC002023D6FCFF00309664 /* geometry.h */,
 			);
 			path = Eureka;
+			sourceTree = "<group>";
+		};
+		D3FC002423D9967D00309664 /* geometry */ = {
+			isa = PBXGroup;
+			children = (
+				D3FC002023D6FCFF00309664 /* geometry.hpp */,
+				D3FC002523D9972B00309664 /* ray.hpp */,
+			);
+			path = geometry;
+			sourceTree = "<group>";
+		};
+		D3FC002623D9980000309664 /* object */ = {
+			isa = PBXGroup;
+			children = (
+				D3FC002723D9981D00309664 /* object.hpp */,
+				D3FC002823D9982F00309664 /* sphere.hpp */,
+			);
+			path = object;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
