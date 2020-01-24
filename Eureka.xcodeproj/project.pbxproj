@@ -23,6 +23,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D32C120723DADEE50036EC91 /* global.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = global.hpp; sourceTree = "<group>"; };
 		D3FC001623CC15EA00309664 /* Eureka */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Eureka; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3FC001923CC15EA00309664 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D3FC002023D6FCFF00309664 /* geometry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = geometry.hpp; sourceTree = "<group>"; };
@@ -42,6 +43,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D32C120623DADE810036EC91 /* utility */ = {
+			isa = PBXGroup;
+			children = (
+				D32C120723DADEE50036EC91 /* global.hpp */,
+			);
+			path = utility;
+			sourceTree = "<group>";
+		};
 		D3FC000D23CC15EA00309664 = {
 			isa = PBXGroup;
 			children = (
@@ -61,6 +70,7 @@
 		D3FC001823CC15EA00309664 /* Eureka */ = {
 			isa = PBXGroup;
 			children = (
+				D32C120623DADE810036EC91 /* utility */,
 				D3FC002623D9980000309664 /* object */,
 				D3FC002423D9967D00309664 /* geometry */,
 				D3FC001923CC15EA00309664 /* main.cpp */,
