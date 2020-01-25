@@ -16,6 +16,8 @@ public:
     Object() : color(dis(gen), dis(gen), dis(gen)) {}
     virtual ~Object() {}
     virtual bool intersect(const Vec3f &, const Vec3f &, float &) const = 0;
+    virtual void getSurfaceData(const Vec3f &, Vec3f &, Vec2f &) const = 0;
+    Vec3f color;
 };
 
 #endif /* object_h */
