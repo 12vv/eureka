@@ -77,7 +77,7 @@ void render(
 {
     Vec3f *framebuffer = new Vec3f[options.width * options.height];
     Vec3f *pix = framebuffer;
-    float scale = tan(deg2rad(options.fov * 0.5));
+    float scale = tan(radian(options.fov * 0.5));
     float imageAspectRatio = options.width / (float)options.height;
     // [comment]
     // Don't forget to transform the ray origin (which is also the camera origin
