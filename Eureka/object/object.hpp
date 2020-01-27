@@ -9,8 +9,13 @@
 #ifndef object_h
 #define object_h
 
+#include <random>
 #include "../utility/global.hpp"
 
+
+std::random_device rd;
+std::mt19937 gen(rd());
+std::uniform_real_distribution<> dis(0, 1);
 
 bool solveQuadratic(const float &a, const float &b, const float &c, float &x0, float &x1)
 {

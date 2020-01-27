@@ -29,9 +29,9 @@
 #include <random>
 
 #include "./utility/global.hpp"
-#include "./geometry/geometry.hpp"
+//#include "./geometry/geometry.hpp"
 #include "./geometry/ray.hpp"
-
+#include "./utility/image_io.hpp"
 
 
 
@@ -117,17 +117,11 @@ void render(
         }
     }
     
-    // Save result to a PPM image (keep these flags if you compile under Windows)
-    std::ofstream ofs("./out.ppm", std::ios::out | std::ios::binary);
-    ofs << "P6\n" << options.width << " " << options.height << "\n255\n";
-    for (uint32_t i = 0; i < options.height * options.width; ++i) {
-        char r = (char)(255 * clamp(0, 1, framebuffer[i].x));
-        char g = (char)(255 * clamp(0, 1, framebuffer[i].y));
-        char b = (char)(255 * clamp(0, 1, framebuffer[i].z));
-        ofs << r << g << b;
-    }
-    
-    ofs.close();
+    // Save result to a PPM image
+    ImageIO image;
+    std::string filename;
+    image.save_ppm(options.width, options.height, framebuffer, filename);
+
     
     delete [] framebuffer;
 }

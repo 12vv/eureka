@@ -10,6 +10,7 @@
 #define global_h
 
 #include <cmath>
+#include <random>
 #include "../geometry/geometry.hpp"
 
 const float PI = 3.141592653589793238;
@@ -20,9 +21,7 @@ const float kInfinity = std::numeric_limits<double>::max();
 const float kEpsilon = 1e-4;
 const float E = 2.718281828459045;
 
-std::random_device rd;
-std::mt19937 gen(rd());
-std::uniform_real_distribution<> dis(0, 1);
+
 
 inline
 float radian(const float &degree){
