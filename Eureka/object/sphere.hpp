@@ -18,7 +18,7 @@ public:
     // @param ori: the ray origin
     // @param dir: the ray direction
     // @param t: the distance from the ray origin to tht intersection point
-    virtual bool intersect(const Vec3f &ori, const Vec3f &dir, float &t) const {
+    bool intersect(const Vec3f &ori, const Vec3f &dir, float &t) const {
         float t0, t1; // solutions for t if the ray intersects
         
         // dot((p(t)-C), (p(t)-C)) = R^2 ;
@@ -40,6 +40,15 @@ public:
         t = t0;
         
         return true; 
+    }
+ 
+    // set normal and texture coordinates
+    void getSurfaceData(const Vec3f &Phit, Vec3f &Nhit, Vec2f &tex) const {
+        Nhit = Phit - center;
+        Nhit.normalize();
+        // remap from range[-pi, pi] to range[0, 1]
+        tex.x = (1 + atan2(Nhit.z, Nhit.x) / M_PI) * 0.5;
+        tex.y = acosf(Nhit.y) / M_PI;
     }
     
     float radius, radius2;
