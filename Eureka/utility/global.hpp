@@ -13,13 +13,13 @@
 #include <random>
 #include "../geometry/geometry.hpp"
 
-const float PI = 3.141592653589793238;
-const float PI_INV = 1.0 / PI;
-const float DOU_PI = 2.0 * PI;
-const float DOU_PI_INV = 1.0 / DOU_PI;
-const float kInfinity = std::numeric_limits<double>::max();
-const float kEpsilon = 1e-4;
-const float E = 2.718281828459045;
+//const float PI = 3.141592653589793238;
+//const float PI_INV = 1.0 / PI;
+//const float DOU_PI = 2.0 * PI;
+//const float DOU_PI_INV = 1.0 / DOU_PI;
+//const float kInfinity = std::numeric_limits<double>::max();
+//const float kEpsilon = 1e-4;
+//const float E = 2.718281828459045;
 
 
 
