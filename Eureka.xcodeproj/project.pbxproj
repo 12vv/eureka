@@ -25,6 +25,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		D30B4C4023E1CAC4007009D7 /* light.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = light.hpp; sourceTree = "<group>"; };
 		D32C120723DADEE50036EC91 /* global.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = global.hpp; sourceTree = "<group>"; };
 		D32C120D23DE89D60036EC91 /* image_io.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = image_io.cpp; sourceTree = "<group>"; };
 		D32C120E23DE89D60036EC91 /* image_io.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = image_io.hpp; sourceTree = "<group>"; };
@@ -62,6 +63,7 @@
 		D32C120C23DE89290036EC91 /* light */ = {
 			isa = PBXGroup;
 			children = (
+				D30B4C4023E1CAC4007009D7 /* light.hpp */,
 			);
 			path = light;
 			sourceTree = "<group>";

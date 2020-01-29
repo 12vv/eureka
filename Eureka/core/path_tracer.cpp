@@ -66,11 +66,7 @@ void PathTracer::render(
         Vec3f *pix = framebuffer;
         float scale = tan(radian(options.fov * 0.5));
         float imageAspectRatio = options.width / (float)options.height;
-        // [comment]
-        // Don't forget to transform the ray origin (which is also the camera origin
-        // by transforming the point with coordinates (0,0,0) to world-space using the
-        // camera-to-world matrix.
-        // [/comment]
+
         Ray ray;
 //        Vec3f orig;
 //        options.cameraToWorld.multPtMatrix(Vec3f(0), orig);
@@ -78,16 +74,7 @@ void PathTracer::render(
         
         for (uint32_t j = 0; j < options.height; ++j) {
             for (uint32_t i = 0; i < options.width; ++i) {
-                // [comment]
-                // Generate primary ray direction. Compute the x and y position
-                // of the ray in screen space. This gives a point on the image plane
-                // at z=1. From there, we simply compute the direction by normalized
-                // the resulting vec3f variable. This is similar to taking the vector
-                // between the point on the image plane and the camera origin, which
-                // in camera space is (0,0,0):
-                //
-                // ray.dir = normalize(Vec3f(x,y,-1) - Vec3f(0));
-                // [/comment]
+
 #ifdef MAYA_STYLE
                 float x = (2 * (i + 0.5) / (float)options.width - 1) * scale;
                 float y = (1 - 2 * (j + 0.5) / (float)options.height) * scale * 1 / imageAspectRatio;
@@ -96,12 +83,9 @@ void PathTracer::render(
                 float x = (2 * (i + 0.5) / (float)options.width - 1) * imageAspectRatio * scale;
                 float y = (1 - 2 * (j + 0.5) / (float)options.height) * scale;
 #endif
-                // [comment]
-                // Don't forget to transform the ray direction using the camera-to-world matrix.
-                // [/comment]
-                //            Vec3f dir;
+
                 
-//                Ray ray(Vec3f(0,0,0), Vec3f(1,1,1));
+                // transform to world space
                 options.cameraToWorld.multVecMatrix(Vec3f(x, y, -1), ray.dir);
                 ray.dir.normalize();
                 *(pix++) = castRay(ray, objects);
