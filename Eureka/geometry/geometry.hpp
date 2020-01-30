@@ -349,7 +349,7 @@ public:
     // for doing what it's supposed to do. If you want to learn how this works though, check the lesson
     // on called Matrix Inverse in the "Mathematics and Physics of Computer Graphics" section.
     //[/comment]
-    Matrix44 inverse()
+    Matrix44 inverse() const 
     {
         int i, j, k;
         Matrix44 s;

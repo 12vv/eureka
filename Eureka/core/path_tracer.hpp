@@ -14,15 +14,17 @@
 #include "../geometry/geometry.hpp"
 #include "../geometry/ray.hpp"
 #include "../object/object.hpp"
+#include "../light/distant.hpp"
 
 class PathTracer {
 public:
 //    PathTracer(){}
     
     bool trace(const Ray &ray, const std::vector<std::unique_ptr<Object>> &objects, float &tNear, const Object *&hitObject);
-    Vec3f castRay(const Ray &ray, const std::vector<std::unique_ptr<Object>> &objects); //, uint32_t depth
+    Vec3f castRay(const Ray &ray, const std::vector<std::unique_ptr<Object>> &objects, const std::unique_ptr<DistantLight> &light, const Options &options); //, uint32_t depth
     void render(const Options &options,
-                const std::vector<std::unique_ptr<Object>> &objects);
+                const std::vector<std::unique_ptr<Object>> &objects,
+                const std::unique_ptr<DistantLight> &light);
     
     
 };

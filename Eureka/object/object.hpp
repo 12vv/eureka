@@ -38,11 +38,12 @@
 class Object {
 public:
 //    Object() : color(dis(gen), dis(gen), dis(gen)) {}
-    Object(): color(2, 1, 4) {}
+    Object(const Matrix44f &o2w) : objectToWorld(o2w), worldToObject(o2w.inverse()) {}
     virtual ~Object() {}
     virtual bool intersect(const Ray &, float &) const = 0;
     virtual void getSurfaceData(const Vec3f &, Vec3f &, Vec2f &) const = 0;
-    Vec3f color;
+    Matrix44f objectToWorld, worldToObject;
+    Vec3f albedo = 0.18;
 };
 
 #endif /* object_h */

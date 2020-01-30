@@ -17,10 +17,11 @@
 //const float PI_INV = 1.0 / PI;
 //const float DOU_PI = 2.0 * PI;
 //const float DOU_PI_INV = 1.0 / DOU_PI;
-//const float kInfinity = std::numeric_limits<double>::max();
+const float kInfinity = std::numeric_limits<double>::max();
 //const float kEpsilon = 1e-4;
 //const float E = 2.718281828459045;
 
+static const Vec3f kDefaultBackgroundColor = Vec3f(0.235294, 0.67451, 0.843137);
 
 
 inline
@@ -43,6 +44,7 @@ struct Options
     uint32_t height;
     float fov;
     Matrix44f cameraToWorld;
+    Vec3f backgroundColor = kDefaultBackgroundColor; 
 };
 
 

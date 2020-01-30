@@ -9,13 +9,15 @@
 #include "path_tracer.hpp"
 //#include "../utility/global.hpp"
 #include "../utility/image_io.hpp"
+#include "../utility/global.hpp"
+
 
 
 //const float PI = 3.141592653589793238;
 //const float PI_INV = 1.0 / PI;
 //const float DOU_PI = 2.0 * PI;
 //const float DOU_PI_INV = 1.0 / DOU_PI;
-const float kInfinity = std::numeric_limits<double>::max();
+//const float kInfinity = std::numeric_limits<double>::max();
 //const float kEpsilon = 1e-4;
 //const float E = 2.718281828459045;
 
@@ -38,8 +40,13 @@ bool PathTracer::trace(const Ray &ray, const std::vector<std::unique_ptr<Object>
 }
 
 //, uint32_t depth
-Vec3f PathTracer::castRay(const Ray &ray, const std::vector<std::unique_ptr<Object>> &objects){
-    Vec3f hitColor = 0;
+Vec3f PathTracer::castRay(const Ray &ray,
+                          const std::vector<std::unique_ptr<Object>> &objects,
+//                          const std::vector<std::unique_ptr<Light>> &lights,
+                          const std::unique_ptr<DistantLight> &light,
+                          const Options &options)
+{
+    Vec3f hitColor = options.backgroundColor;
     const Object *hitObject = nullptr; // a pointer to the hit object
     float t; // the intersection distrance
     
@@ -53,14 +60,19 @@ Vec3f PathTracer::castRay(const Ray &ray, const std::vector<std::unique_ptr<Obje
         // shade the hit point (a basic checker board pattern)
         float scale = 4;
         float pattern = (fmodf(tex.x * scale, 1) > 0.5) ^ (fmodf(tex.y * scale, 1) > 0.5);
-        hitColor = std::max(0.f, Nhit.dotProduct(-ray.dir)) * mix(hitObject->color, hitObject->color * 0.8, pattern);
+//        hitColor = std::max(0.f, Nhit.dotProduct(-ray.dir)) * mix(hitObject->color, hitObject->color * 0.8, pattern);
+
+        
+        hitColor = hitObject->albedo * light->intensity * light->color * std::max(0.f, Nhit.dotProduct(-ray.dir));
     }
     return hitColor;
 }
 
 void PathTracer::render(
         const Options &options,
-        const std::vector<std::unique_ptr<Object>> &objects)
+        const std::vector<std::unique_ptr<Object>> &objects,
+//        const std::vector<std::unique_ptr<Light>> &lights,
+        const std::unique_ptr<DistantLight> &light)
     {
         Vec3f *framebuffer = new Vec3f[options.width * options.height];
         Vec3f *pix = framebuffer;
@@ -88,7 +100,7 @@ void PathTracer::render(
                 // transform to world space
                 options.cameraToWorld.multVecMatrix(Vec3f(x, y, -1), ray.dir);
                 ray.dir.normalize();
-                *(pix++) = castRay(ray, objects);
+                *(pix++) = castRay(ray, objects, light, options);
             }
         }
         

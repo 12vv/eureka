@@ -13,7 +13,7 @@
 
 class Light {
 public:
-    Light(const Matrix44f &l2w, const Vec3f &c = 1, float &i = 1) : LightToWorld(l2w), color(r), intensity(i) {}
+    Light(const Matrix44f &l2w, const Vec3f &c = 1, const float &i = 1) : LightToWorld(l2w), color(c), intensity(i) {}
     virtual ~Light() {}
     virtual void illuminate(const Vec3f &P, Vec3f &, Vec3f &, float &) const = 0;
     Vec3f color;
