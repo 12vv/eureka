@@ -53,12 +53,18 @@ public:
     Vec3(): x(0), y(0), z(0) {}
     Vec3(T xx): x(xx), y(xx), z(xx) {}
     Vec3(T xx, T yy, T zz): x(xx), y(yy), z(zz) {}
+//    Vec3 operator = (const Vec3 &v) const
+//    { x = v.x; y = v.y; z = v.z; return *this; }
     Vec3 operator + (const Vec3 &v) const
-    {return Vec3(x + v.x, y + v.y, z + v.z); }
+    { return Vec3(x + v.x, y + v.y, z + v.z); }
     Vec3 operator - (const Vec3 &v) const
     { return Vec3(x - v.x, y - v.y, z - v.z); }
     Vec3 operator - () const
-    {return Vec3(-x, -y, -z); }
+    { return Vec3(-x, -y, -z); }
+    Vec3 operator += (const Vec3 &v)
+    { x += v.x, y += v.y, z += v.z; return *this; }
+    Vec3 operator -= (const Vec3 &v)
+    {x -= v.x, y -= v.y, z -= v.z; return *this; }
     Vec3 operator * (const T &r) const
     { return Vec3(x * r, y * r, z * r); }
     Vec3 operator * (const Vec3 &v) const
@@ -69,6 +75,14 @@ public:
     { x /= r, y /= r, z /= r; return *this; }
     Vec3& operator *= (const T &r)
     { x *= r, y *= r, z *= r; return *this; }
+    
+    template <typename U>
+    Vec3 operator * (const U u) const
+    { return Vec3(x * u, y * u, z * u); }
+    template <typename U>
+    Vec3 operator / (const U u) const
+    { double inv = 1.0/u; return Vec3(x * inv, y * inv, z * inv); }
+    
     T crossProduct(const Vec3<T> &v) const
     { return Vec3<T>(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x); }
     T norm() const

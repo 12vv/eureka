@@ -27,7 +27,7 @@ std::string ImageIO::generate_file_name()
 }
 
 
-bool ImageIO::save_ppm(int width, int height, const Vec3f *framebuffer, std::string &file)
+bool ImageIO::save_ppm(int width, int height, const std::unique_ptr<Vec3f []> &framebuffer, std::string &file)
 {
     file = generate_file_name();
     file += ".ppm";

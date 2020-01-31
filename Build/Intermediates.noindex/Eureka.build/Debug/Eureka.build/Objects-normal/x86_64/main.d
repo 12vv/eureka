@@ -14,4 +14,5 @@ dependencies: /Users/jaythan/workspace/Eureka/Eureka/main.cpp \
   /Users/jaythan/workspace/Eureka/Eureka/./core/../light/light.hpp \
   /Users/jaythan/workspace/Eureka/Eureka/./core/../light/../geometry/geometry.hpp \
   /Users/jaythan/workspace/Eureka/Eureka/./object/sphere.hpp \
-  /Users/jaythan/workspace/Eureka/Eureka/./light/distant.hpp
+  /Users/jaythan/workspace/Eureka/Eureka/./light/distant.hpp \
+  /Users/jaythan/workspace/Eureka/Eureka/./light/point.hpp

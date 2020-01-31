@@ -16,15 +16,27 @@
 #include "../object/object.hpp"
 #include "../light/distant.hpp"
 
+enum RayType { kPrimaryRay, kShadowRay };
+
+struct IsectInfo
+{
+    const Object *hitObject = nullptr;
+    float tNear = kInfinity;
+    Vec2f uv;
+    uint32_t index = 0;
+};
+
+
+
 class PathTracer {
 public:
 //    PathTracer(){}
     
-    bool trace(const Ray &ray, const std::vector<std::unique_ptr<Object>> &objects, float &tNear, const Object *&hitObject);
-    Vec3f castRay(const Ray &ray, const std::vector<std::unique_ptr<Object>> &objects, const std::unique_ptr<DistantLight> &light, const Options &options); //, uint32_t depth
+    bool trace(const Ray &ray, const std::vector<std::unique_ptr<Object>> &objects, IsectInfo &isect, RayType rayType = kPrimaryRay);
+    Vec3f castRay(const Ray &ray, const std::vector<std::unique_ptr<Object>> &objects, const std::vector<std::unique_ptr<Light>> &lights, const Options &options, uint32_t depth);
     void render(const Options &options,
                 const std::vector<std::unique_ptr<Object>> &objects,
-                const std::unique_ptr<DistantLight> &light);
+                const std::vector<std::unique_ptr<Light>> &lights);
     
     
 };

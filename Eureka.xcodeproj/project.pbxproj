@@ -32,6 +32,7 @@
 		D32C120E23DE89D60036EC91 /* image_io.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = image_io.hpp; sourceTree = "<group>"; };
 		D32C121123DFCFE90036EC91 /* path_tracer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = path_tracer.cpp; sourceTree = "<group>"; };
 		D32C121223DFCFE90036EC91 /* path_tracer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = path_tracer.hpp; sourceTree = "<group>"; };
+		D35FC11C23E2D24200BA6732 /* point.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = point.hpp; sourceTree = "<group>"; };
 		D3FC001623CC15EA00309664 /* Eureka */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Eureka; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3FC001923CC15EA00309664 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D3FC002023D6FCFF00309664 /* geometry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = geometry.hpp; sourceTree = "<group>"; };
@@ -66,6 +67,7 @@
 			children = (
 				D30B4C4023E1CAC4007009D7 /* light.hpp */,
 				D30B4C4123E265E2007009D7 /* distant.hpp */,
+				D35FC11C23E2D24200BA6732 /* point.hpp */,
 			);
 			path = light;
 			sourceTree = "<group>";

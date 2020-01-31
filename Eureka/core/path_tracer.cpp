@@ -13,57 +13,88 @@
 
 
 
-//const float PI = 3.141592653589793238;
-//const float PI_INV = 1.0 / PI;
-//const float DOU_PI = 2.0 * PI;
-//const float DOU_PI_INV = 1.0 / DOU_PI;
-//const float kInfinity = std::numeric_limits<double>::max();
-//const float kEpsilon = 1e-4;
-//const float E = 2.718281828459045;
 
 
 
-bool PathTracer::trace(const Ray &ray, const std::vector<std::unique_ptr<Object>> &objects, float &tNear, const Object *&hitObject)
+bool PathTracer::trace(const Ray &ray, const std::vector<std::unique_ptr<Object>> &objects, IsectInfo &isect, RayType rayType)
 {
-    tNear = kInfinity;
+    isect.hitObject = nullptr;
 
     std::vector<std::unique_ptr<Object>>::const_iterator iter = objects.begin();
     for (; iter != objects.end(); ++iter) {
         float t = kInfinity;
-        if ((*iter)->intersect(ray, t) && t < tNear) {
-            hitObject = iter->get();
-            tNear = t;
+        if ((*iter)->intersect(ray, t) && t < isect.tNear) {
+            isect.hitObject = iter->get();
+            isect.tNear = t;
         }
     }
     
-    return (hitObject != nullptr);
+    return (isect.hitObject != nullptr);
 }
 
 //, uint32_t depth
 Vec3f PathTracer::castRay(const Ray &ray,
                           const std::vector<std::unique_ptr<Object>> &objects,
-//                          const std::vector<std::unique_ptr<Light>> &lights,
-                          const std::unique_ptr<DistantLight> &light,
-                          const Options &options)
+                          const std::vector<std::unique_ptr<Light>> &lights,
+                          const Options &options,
+                          uint32_t depth = 0)
 {
-    Vec3f hitColor = options.backgroundColor;
-    const Object *hitObject = nullptr; // a pointer to the hit object
-    float t; // the intersection distrance
-    
-    
-    if(trace(ray, objects, t, hitObject)){
-        Vec3f Phit = ray.at(t);
-        Vec3f Nhit;
-        Vec2f tex;
+    if (depth > options.maxDepth) return options.backgroundColor;
+    Vec3f hitColor = 0;
 
-        hitObject->getSurfaceData(Phit, Nhit, tex);
+    IsectInfo isect;
+    
+    if(trace(ray, objects, isect)){
+        Vec3f Phit = ray.at(isect.tNear);
+        Vec3f Nhit;
+        Vec2f texCoordinates;
+
+        isect.hitObject->getSurfaceData(Phit, Nhit, texCoordinates);
+        
+        switch (isect.hitObject->type) {
+            case kDiffuse: // loop over all lights in the scene
+            {
+                for(uint32_t i = 0; i < lights.size(); i++){
+                    Vec3f lightDir, lightIntensity;
+                    IsectInfo isectShad;
+                    lights[i]->illuminate(Phit, lightDir, lightIntensity, isectShad.tNear);
+                    
+//                    auto o = Phit + Nhit * options.bias;
+//                    std::cout << o << std::endl;
+//                    ray.ori = o;
+                    
+                    bool vis = trace(ray, objects, isectShad);  // ray here should add a bias !!!!!!!!!!!!!!!!!!!!
+//                    std::cout << vis << std::endl;
+                    hitColor += isect.hitObject->albedo / M_PI * lights[i]->intensity * lights[i]->color * std::max(0.f, Nhit.dotProduct(-ray.dir));
+//                    float angle = radian(45);
+//                    float s = texCoordinates.x * cos(angle) - texCoordinates.y * sin(angle);
+//                    float t = texCoordinates.y * cos(angle) + texCoordinates.x * sin(angle);
+//                    float scaleS = 20, scaleT = 20;
+//                    float pattern = (modulo(s * scaleS) < 0.5);
+//                    hitColor += vis * pattern * lightIntensity * std::max(0.f, Phit.dotProduct(-lightDir));
+                }
+                break;
+            }
+            case kReflection:
+            {
+                break;
+            }
+            case kReflectionAndRefraction:
+            {
+                break;
+            }
+            default:
+                break;
+        }
+        
         // shade the hit point (a basic checker board pattern)
-        float scale = 4;
-        float pattern = (fmodf(tex.x * scale, 1) > 0.5) ^ (fmodf(tex.y * scale, 1) > 0.5);
+//        float scale = 4;
+//        float pattern = (fmodf(textureCoordinates.x * scale, 1) > 0.5) ^ (fmodf(textureCoordinates.y * scale, 1) > 0.5);
 //        hitColor = std::max(0.f, Nhit.dotProduct(-ray.dir)) * mix(hitObject->color, hitObject->color * 0.8, pattern);
 
-        
-        hitColor = hitObject->albedo * light->intensity * light->color * std::max(0.f, Nhit.dotProduct(-ray.dir));
+    }
+    else{
+        hitColor = options.backgroundColor;
     }
     return hitColor;
 }
@@ -72,10 +103,12 @@ void PathTracer::render(
         const Options &options,
         const std::vector<std::unique_ptr<Object>> &objects,
 //        const std::vector<std::unique_ptr<Light>> &lights,
-        const std::unique_ptr<DistantLight> &light)
+        const std::vector<std::unique_ptr<Light>> &lights)
     {
-        Vec3f *framebuffer = new Vec3f[options.width * options.height];
-        Vec3f *pix = framebuffer;
+//        Vec3f *framebuffer = new Vec3f[options.width * options.height];
+//        Vec3f *pix = framebuffer;
+        std::unique_ptr<Vec3f []> framebuffer(new Vec3f[options.width * options.height]);
+        Vec3f *pix = framebuffer.get();
         float scale = tan(radian(options.fov * 0.5));
         float imageAspectRatio = options.width / (float)options.height;
 
@@ -100,7 +133,7 @@ void PathTracer::render(
                 // transform to world space
                 options.cameraToWorld.multVecMatrix(Vec3f(x, y, -1), ray.dir);
                 ray.dir.normalize();
-                *(pix++) = castRay(ray, objects, light, options);
+                *(pix++) = castRay(ray, objects, lights, options);
             }
         }
         
@@ -110,5 +143,5 @@ void PathTracer::render(
         image.save_ppm(options.width, options.height, framebuffer, filename);
         
         
-        delete [] framebuffer;
+//        delete [] framebuffer;
 }

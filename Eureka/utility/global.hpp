@@ -18,11 +18,10 @@
 //const float DOU_PI = 2.0 * PI;
 //const float DOU_PI_INV = 1.0 / DOU_PI;
 const float kInfinity = std::numeric_limits<double>::max();
-//const float kEpsilon = 1e-4;
+static const float kEpsilon = 1e-8;
 //const float E = 2.718281828459045;
-
 static const Vec3f kDefaultBackgroundColor = Vec3f(0.235294, 0.67451, 0.843137);
-
+enum MaterialType { kDiffuse, kReflection, kReflectionAndRefraction };
 
 inline
 float radian(const float &degree){
@@ -38,14 +37,21 @@ inline
 Vec3f mix(const Vec3f &a, const Vec3f& b, const float &mixValue)
 { return a * (1 - mixValue) + b * mixValue; }
 
+inline float modulo(const float &f)
+{
+    return f - std::floor(f);
+}
+
 struct Options
 {
-    uint32_t width;
-    uint32_t height;
-    float fov;
+    uint32_t width = 640;
+    uint32_t height = 480;
+    float fov = 90;
+    Vec3f backgroundColor = kDefaultBackgroundColor;
     Matrix44f cameraToWorld;
-    Vec3f backgroundColor = kDefaultBackgroundColor; 
-};
+    float bias = 0.0001;
+    uint32_t maxDepth = 5;
+}; 
 
 
 

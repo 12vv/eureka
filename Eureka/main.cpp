@@ -36,13 +36,14 @@
 #include "./core/path_tracer.hpp"
 #include "./object/sphere.hpp"
 #include "./light/distant.hpp"
+#include "./light/point.hpp"
 
 
 //static const float kInfinity = std::numeric_limits<float>::max();
-static const float kEpsilon = 1e-8;
+
 //static const Vec3f kDefaultBackgroundColor = Vec3f(0.235294, 0.67451, 0.843137);
 
-enum MaterialType { kDiffuse, kReflection, kReflectionAndRefraction };
+
 
 
 std::random_device rd;
@@ -67,7 +68,7 @@ int main(int argc, char **argv)
     // creating the scene (adding objects and lights)
     std::vector<std::unique_ptr<Object>> objects;
     // lights
-//    std::vector<std::unique_ptr<Light>> lights;
+    std::vector<std::unique_ptr<Light>> lights;
     
     Matrix44f xform1;
     xform1[3][0] = -1.2;
@@ -97,11 +98,14 @@ Matrix44f l2w(0.95292, 0.289503, 0.0901785, 0, -0.0960954, 0.5704, -0.815727, 0,
     
 
 
-    const std::unique_ptr<DistantLight> light = std::unique_ptr<DistantLight>(new DistantLight(l2w, 1, 1));
+//    const std::unique_ptr<DistantLight> light = std::unique_ptr<DistantLight>(new DistantLight(l2w, 1, 1));
     
 //    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, 1, 1)));
     // finally, render
-    pt.render(options, objects, light);
+    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, Vec3f(0, 1, 0), 1)));
+    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(0, 0, 1), 1)));
+    
+    pt.render(options, objects, lights);
     
     return 0;
 }

@@ -15,7 +15,7 @@ class ImageIO {
 public:
     ImageIO(){}
     
-    static bool save_ppm(int width, int height, const Vec3f *framebuffer, std::string &file);
+    static bool save_ppm(int width, int height, const std::unique_ptr<Vec3f []> &, std::string &file);
     
     static std::string generate_file_name();
 };

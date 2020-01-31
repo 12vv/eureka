@@ -43,7 +43,9 @@ public:
     virtual bool intersect(const Ray &, float &) const = 0;
     virtual void getSurfaceData(const Vec3f &, Vec3f &, Vec2f &) const = 0;
     Matrix44f objectToWorld, worldToObject;
-    Vec3f albedo = 0.18;
+    MaterialType type = kDiffuse;
+    float ior = 1; // index of refraction
+    Vec3f albedo = 0.8;
 };
 
 #endif /* object_h */
