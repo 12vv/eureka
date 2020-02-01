@@ -35,8 +35,8 @@ bool solveQuadratic(const float &a, const float &b, const float &c, float &x0, f
 
 class Sphere : public Object {
 public:
-    Sphere(const Matrix44f &o2w, const float &r): Object(o2w), radius(r), radius2(r*r) {
-        o2w.multPtMatrix(Vec3f(0), center);
+    Sphere(const Matrix44f &o2w, const float &r, const Vec3f &c): Object(o2w), radius(r), radius2(r*r) {
+        o2w.multPtMatrix(c, center);
     }
     // Ray-sphere intersection test
     // @param ori: the ray origin

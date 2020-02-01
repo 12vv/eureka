@@ -85,8 +85,9 @@ Matrix44f l2w(0.95292, 0.289503, 0.0901785, 0, -0.0960954, 0.5704, -0.815727, 0,
 //        Vec3f randPos((0.5 - dis(gen)) * 10, (0.5 - dis(gen)) * 10, (0.5 + dis(gen) * 10));
 //        float randRadius = (0.5 + dis(gen) * 0.5);
 //        objects.push_back(std::unique_ptr<Object>(new Sphere(randPos, randRadius)));
-        objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, 5)));
+        objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, 5, Vec3f(10, 0, 0))));
     }
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, 3, Vec3f(-5, 0, 0))));
     
     
     // setting up options
