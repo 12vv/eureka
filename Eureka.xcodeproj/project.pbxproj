@@ -33,6 +33,13 @@
 		D32C121123DFCFE90036EC91 /* path_tracer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = path_tracer.cpp; sourceTree = "<group>"; };
 		D32C121223DFCFE90036EC91 /* path_tracer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = path_tracer.hpp; sourceTree = "<group>"; };
 		D35FC11C23E2D24200BA6732 /* point.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = point.hpp; sourceTree = "<group>"; };
+		D35FC11E23E50E0600BA6732 /* material.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = material.hpp; sourceTree = "<group>"; };
+		D35FC11F23E50FB400BA6732 /* diffuse.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = diffuse.hpp; sourceTree = "<group>"; };
+		D35FC12023E511D700BA6732 /* plane.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = plane.hpp; sourceTree = "<group>"; };
+		D35FC12123E51C5B00BA6732 /* trianglemesh.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = trianglemesh.hpp; sourceTree = "<group>"; };
+		D35FC12223E57B7100BA6732 /* isectinfo.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = isectinfo.hpp; sourceTree = "<group>"; };
+		D35FC12323E66C3D00BA6732 /* glossy.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = glossy.hpp; sourceTree = "<group>"; };
+		D35FC12423E6957D00BA6732 /* mirror.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = mirror.hpp; sourceTree = "<group>"; };
 		D3FC001623CC15EA00309664 /* Eureka */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Eureka; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3FC001923CC15EA00309664 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		D3FC002023D6FCFF00309664 /* geometry.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = geometry.hpp; sourceTree = "<group>"; };
@@ -77,8 +84,20 @@
 			children = (
 				D32C121123DFCFE90036EC91 /* path_tracer.cpp */,
 				D32C121223DFCFE90036EC91 /* path_tracer.hpp */,
+				D35FC12223E57B7100BA6732 /* isectinfo.hpp */,
 			);
 			path = core;
+			sourceTree = "<group>";
+		};
+		D35FC11D23E50D4900BA6732 /* material */ = {
+			isa = PBXGroup;
+			children = (
+				D35FC11E23E50E0600BA6732 /* material.hpp */,
+				D35FC11F23E50FB400BA6732 /* diffuse.hpp */,
+				D35FC12323E66C3D00BA6732 /* glossy.hpp */,
+				D35FC12423E6957D00BA6732 /* mirror.hpp */,
+			);
+			path = material;
 			sourceTree = "<group>";
 		};
 		D3FC000D23CC15EA00309664 = {
@@ -100,6 +119,7 @@
 		D3FC001823CC15EA00309664 /* Eureka */ = {
 			isa = PBXGroup;
 			children = (
+				D35FC11D23E50D4900BA6732 /* material */,
 				D32C121023DFCF920036EC91 /* core */,
 				D32C120C23DE89290036EC91 /* light */,
 				D32C120623DADE810036EC91 /* utility */,
@@ -124,6 +144,8 @@
 			children = (
 				D3FC002723D9981D00309664 /* object.hpp */,
 				D3FC002823D9982F00309664 /* sphere.hpp */,
+				D35FC12023E511D700BA6732 /* plane.hpp */,
+				D35FC12123E51C5B00BA6732 /* trianglemesh.hpp */,
 			);
 			path = object;
 			sourceTree = "<group>";

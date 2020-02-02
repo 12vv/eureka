@@ -6,12 +6,14 @@
 //  Copyright © 2020 Jaythan. All rights reserved.
 //
 
-#ifndef object_h
-#define object_h
+#ifndef OBJECT_HPP
+#define OBJECT_HPP
 
 #include <random>
 #include "../utility/global.hpp"
 #include "../geometry/ray.hpp"
+#include "../material/material.hpp"
+#include "../material/diffuse.hpp"
 
 //std::random_device rd;
 //std::mt19937 gen(rd());
@@ -38,14 +40,17 @@
 class Object {
 public:
 //    Object() : color(dis(gen), dis(gen), dis(gen)) {}
-    Object(const Matrix44f &o2w) : objectToWorld(o2w), worldToObject(o2w.inverse()) {}
+    Object(const Matrix44f &o2w, Material *m) : objectToWorld(o2w), worldToObject(o2w.inverse()), type(m) {}
     virtual ~Object() {}
     virtual bool intersect(const Ray &, float &) const = 0;
     virtual void getSurfaceData(const Vec3f &, Vec3f &, Vec2f &) const = 0;
     Matrix44f objectToWorld, worldToObject;
-    MaterialType type = kDiffuse;
+//    Material type = Material::kDiffuse;
+//    Material *type = new Diffuse(Material::kDiffuse, Vec3f(0, 0, 1));
+    Material *type = nullptr;
     float ior = 1; // index of refraction
-    Vec3f albedo = 0.8;
+    Vec3f albedo = Vec3f(0.8, 0.8, 0.5);
+//    Vec3f albedo = 0.18;
 };
 
 #endif /* object_h */

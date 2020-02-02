@@ -6,8 +6,8 @@
 //  Copyright © 2020 Jaythan. All rights reserved.
 //
 
-#ifndef global_h
-#define global_h
+#ifndef GLOBAL_HPP
+#define GLOBAL_HPP
 
 #include <cmath>
 #include <random>
@@ -21,7 +21,7 @@ const float kInfinity = std::numeric_limits<double>::max();
 static const float kEpsilon = 1e-8;
 //const float E = 2.718281828459045;
 static const Vec3f kDefaultBackgroundColor = Vec3f(0.235294, 0.67451, 0.843137);
-enum MaterialType { kDiffuse, kReflection, kReflectionAndRefraction };
+//enum MaterialType { kDiffuse, kReflection, kReflectionAndRefraction };
 
 inline
 float radian(const float &degree){
@@ -49,7 +49,7 @@ struct Options
     float fov = 90;
     Vec3f backgroundColor = kDefaultBackgroundColor;
     Matrix44f cameraToWorld;
-    float bias = 0.0001;
+    float bias = 0.0002;
     uint32_t maxDepth = 5;
 }; 
 

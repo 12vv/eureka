@@ -6,8 +6,8 @@
 //  Copyright © 2020 Jaythan. All rights reserved.
 //
 
-#ifndef ray_h
-#define ray_h
+#ifndef RAY_HPP
+#define RAY_HPP
 
 #include "geometry.hpp"
 

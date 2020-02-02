@@ -6,8 +6,8 @@
 //  Copyright © 2020 Jaythan. All rights reserved.
 //
 
-#ifndef light_h
-#define light_h
+#ifndef LIGHT_HPP
+#define LIGHT_HPP
 
 #include "../geometry/geometry.hpp"
 

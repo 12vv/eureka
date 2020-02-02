@@ -6,8 +6,8 @@
 //  Copyright © 2020 Jaythan. All rights reserved.
 //
 
-#ifndef sphere_h
-#define sphere_h
+#ifndef SPHERE_HPP
+#define SPHERE_HPP
 
 #include "object.hpp"
 
@@ -35,7 +35,7 @@ bool solveQuadratic(const float &a, const float &b, const float &c, float &x0, f
 
 class Sphere : public Object {
 public:
-    Sphere(const Matrix44f &o2w, const float &r, const Vec3f &c): Object(o2w), radius(r), radius2(r*r) {
+    Sphere(const Matrix44f &o2w, Material *m, const float &r, const Vec3f &c): Object(o2w, m), radius(r), radius2(r*r) {
         o2w.multPtMatrix(c, center);
     }
     // Ray-sphere intersection test
@@ -78,6 +78,7 @@ public:
     
     float radius, radius2;
     Vec3f center;
+//    Material material;
 };
 
 

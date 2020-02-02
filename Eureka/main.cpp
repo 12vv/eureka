@@ -37,6 +37,9 @@
 #include "./object/sphere.hpp"
 #include "./light/distant.hpp"
 #include "./light/point.hpp"
+#include "./object/plane.hpp"
+#include "./material/material.hpp"
+#include "./material/mirror.hpp"
 
 
 //static const float kInfinity = std::numeric_limits<float>::max();
@@ -75,8 +78,10 @@ int main(int argc, char **argv)
     xform1[3][1] = 6;
     xform1[3][2] = -3;
 //    Sphere *sph1 = new Sphere(xform1, 5);
+
     
-Matrix44f l2w(0.95292, 0.289503, 0.0901785, 0, -0.0960954, 0.5704, -0.815727, 0, -0.287593, 0.768656, 0.571365, 0, 0, 0, 0, 1); 
+//Matrix44f l2w(0.95292, 0.289503, 0.0901785, 0, -0.0960954, 0.5704, -0.815727, 0, -0.287593, 0.768656, 0.571365, 0, 0, 0, 0, 1);
+    Matrix44f l2w(11.146836, -5.781569, -0.0605886, 0, -1.902827, -3.543982, -11.895445, 0, 5.459804, 10.568624, -4.02205, 0, 0, 0, 0, 1);
     
     // generate a scene made of random spheres
     uint32_t numSpheres = 1;
@@ -85,10 +90,15 @@ Matrix44f l2w(0.95292, 0.289503, 0.0901785, 0, -0.0960954, 0.5704, -0.815727, 0,
 //        Vec3f randPos((0.5 - dis(gen)) * 10, (0.5 - dis(gen)) * 10, (0.5 + dis(gen) * 10));
 //        float randRadius = (0.5 + dis(gen) * 0.5);
 //        objects.push_back(std::unique_ptr<Object>(new Sphere(randPos, randRadius)));
-        objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, 5, Vec3f(10, 0, 0))));
+        objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 0, 1)), 5, Vec3f(6, 0, 0))));
     }
-    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, 3, Vec3f(-5, 0, 0))));
+//    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), 3, Vec3f(-3, 0, 0))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 1, 0)), 95, Vec3f(0, -100, 0))));
     
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), 4, Vec3f(15, 10, 0))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 1, 0)), 4, Vec3f(-5, 0, 30))));
+    
+//    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, Vec3f(1, 0, 0), Vec3f(1, 0, 0))));
     
     // setting up options
     Options options;
@@ -103,8 +113,8 @@ Matrix44f l2w(0.95292, 0.289503, 0.0901785, 0, -0.0960954, 0.5704, -0.815727, 0,
     
 //    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, 1, 1)));
     // finally, render
-    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, Vec3f(0, 1, 0), 1)));
-    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(0, 0, 1), 1)));
+    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, Vec3f(0.8, 0.8, 0.2), 1)));
+//    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(0, 0.5, 1), 1)));
     
     pt.render(options, objects, lights);
     

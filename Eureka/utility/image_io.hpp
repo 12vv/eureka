@@ -6,8 +6,8 @@
 //  Copyright © 2020 Jaythan. All rights reserved.
 //
 
-#ifndef image_io_hpp
-#define image_io_hpp
+#ifndef IMAGE_IO_HPP
+#define IMAGE_IO_HPP
 
 #include <string.h>
 
