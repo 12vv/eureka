@@ -34,24 +34,15 @@ bool PathTracer::trace(const Ray &ray,
         float tNear = kInfinity;
         uint32_t index = 0;
         Vec2f uv;
-        if (objects[k]->intersect(ray, tNear) && tNear < isect.tNear) {
+        if (objects[k]->intersect(ray, tNear, index, uv) && tNear < isect.tNear) {
             if (rayType == kShadowRay && (dynamic_cast< Glossy* >( objects[k]->type )) != nullptr) continue;
             isect.hitObject = objects[k].get();
             isect.tNear = tNear;
             isect.index = index;
             isect.uv = uv;
         }
-    }
 
-//    std::vector<std::unique_ptr<Object>>::const_iterator iter = objects.begin();
-//    for (; iter != objects.end(); ++iter) {
-//        float t = kInfinity;
-//        if ((*iter)->intersect(ray, t) && t < isect.tNear) {
-//            isect.hitObject = iter->get();
-//            isect.tNear = t;
-//        }
-//    }
-    
+    }
     return (isect.hitObject != nullptr);
 }
 
@@ -72,7 +63,7 @@ Vec3f PathTracer::castRay(const Ray &ray,
         Vec3f Nhit;
         Vec2f texCoordinates;
 
-        isect.hitObject->getSurfaceData(Phit, Nhit, texCoordinates);
+        isect.hitObject->getSurfaceData(Phit, ray.dir, isect.index, isect.uv, Nhit, texCoordinates);
         
         Material *type = isect.hitObject->type;
         
@@ -89,7 +80,6 @@ Vec3f PathTracer::castRay(const Ray &ray,
                 //                    std::cout << vis << std::endl;
                 hitColor += vis * isect.hitObject->albedo / M_PI * lights[i]->intensity * lights[i]->color * std::max(0.f, Nhit.dotProduct(-lightDir));
 //                 hitColor += vis * isect.hitObject->albedo * lightIntensity * std::max(0.f, Nhit.dotProduct(-lightDir));
-
                                     float angle = radian(45);
                                     float s = texCoordinates.x * cos(angle) - texCoordinates.y * sin(angle);
                                     float t = texCoordinates.y * cos(angle) + texCoordinates.x * sin(angle);

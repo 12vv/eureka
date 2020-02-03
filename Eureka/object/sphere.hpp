@@ -42,7 +42,10 @@ public:
     // @param ori: the ray origin
     // @param dir: the ray direction
     // @param t: the distance from the ray origin to tht intersection point
-    bool intersect(const Ray &ray, float &tNear) const {
+    bool intersect(const Ray &ray, float &tNear,
+                   uint32_t &triIndex, // not used for sphere
+                   Vec2f &uv) const    // not used for sphere
+    {
         float t0, t1; // solutions for t if the ray intersects
         
         // dot((p(t)-C), (p(t)-C)) = R^2 ;
@@ -68,7 +71,12 @@ public:
     }
  
     // set normal and texture coordinates
-    void getSurfaceData(const Vec3f &Phit, Vec3f &Nhit, Vec2f &textureCoordinates) const {
+    void getSurfaceData(const Vec3f &Phit,
+                        const Vec3f &viewDirection,
+                        const uint32_t &triIndex,   // not used for sphere
+                        const Vec2f &uv,            // not used for sphere
+                        Vec3f &Nhit,
+                        Vec2f &textureCoordinates) const {
         Nhit = Phit - center;
         Nhit.normalize();
         // remap from range[-pi, pi] to range[0, 1]

@@ -90,15 +90,18 @@ int main(int argc, char **argv)
 //        Vec3f randPos((0.5 - dis(gen)) * 10, (0.5 - dis(gen)) * 10, (0.5 + dis(gen) * 10));
 //        float randRadius = (0.5 + dis(gen) * 0.5);
 //        objects.push_back(std::unique_ptr<Object>(new Sphere(randPos, randRadius)));
-        objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 0, 1)), 5, Vec3f(6, 0, 0))));
+//        objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 0, 1)), 5, Vec3f(6, 0, 0))));
     }
 //    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), 3, Vec3f(-3, 0, 0))));
-    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 1, 0)), 95, Vec3f(0, -100, 0))));
     
+    
+//    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 1, 0)), 95, Vec3f(0, -100, 0))));
     objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), 4, Vec3f(0, 10, 0))));
-//    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 1, 0)), 4, Vec3f(-5, 0, 20))));
     
-//    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, Vec3f(1, 0, 0), Vec3f(1, 0, 0))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 1, 0)), 4, Vec3f(15, 0, 20))));
+    
+    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Diffuse(Material::kDiffuse, Vec3f(1, 0, 0)), Vec3f(0, -5, 0), Vec3f(0, 10, 0.1))));
+    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Diffuse(Material::kDiffuse, Vec3f(1, 0, 0)), Vec3f(-10, 0, 0), Vec3f(10, 0, 0.1))));
     
     // setting up options
     Options options;
@@ -106,14 +109,13 @@ int main(int argc, char **argv)
     options.width = 1024;
     options.height = 747;
     options.cameraToWorld = Matrix44f(0.999945, 0, 0.0104718, 0, 0.00104703, 0.994989, -0.0999803, 0, -0.0104193, 0.0999858, 0.994934, 0, -0.978596, 17.911879, 75.483369, 1);
-    
 
 
 //    const std::unique_ptr<DistantLight> light = std::unique_ptr<DistantLight>(new DistantLight(l2w, 1, 1));
     
 //    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, 1, 1)));
     // finally, render
-    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, Vec3f(0.8, 0.8, 0.2), 1)));
+    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, Vec3f(0.2, 0.8, 0.2), 1)));
 //    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(0, 0.5, 1), 1)));
     
     pt.render(options, objects, lights);
