@@ -95,8 +95,8 @@ int main(int argc, char **argv)
 //    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), 3, Vec3f(-3, 0, 0))));
     objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 1, 0)), 95, Vec3f(0, -100, 0))));
     
-    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), 4, Vec3f(15, 10, 0))));
-    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 1, 0)), 4, Vec3f(-5, 0, 30))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), 4, Vec3f(0, 10, 0))));
+//    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 1, 0)), 4, Vec3f(-5, 0, 20))));
     
 //    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, Vec3f(1, 0, 0), Vec3f(1, 0, 0))));
     

@@ -87,8 +87,8 @@ Vec3f PathTracer::castRay(const Ray &ray,
                 bool vis = !trace(tmp, objects, isectShad, kShadowRay);
                 //                    bool vis = trace(ray, objects, isectShad);  // ray here should add a bias !!!!!!!!!!!!!!!!!!!!
                 //                    std::cout << vis << std::endl;
-                hitColor += vis * isect.hitObject->albedo / M_PI * lights[i]->intensity * lights[i]->color * std::max(0.f, Nhit.dotProduct(-ray.dir));
-//                 hitColor = isect.hitObject->albedo / M_PI * lights[i]->intensity * lights[i]->color * std::max(0.f, Nhit.dotProduct(-ray.dir));
+                hitColor += vis * isect.hitObject->albedo / M_PI * lights[i]->intensity * lights[i]->color * std::max(0.f, Nhit.dotProduct(-lightDir));
+//                 hitColor += vis * isect.hitObject->albedo * lightIntensity * std::max(0.f, Nhit.dotProduct(-lightDir));
 
                                     float angle = radian(45);
                                     float s = texCoordinates.x * cos(angle) - texCoordinates.y * sin(angle);
