@@ -13,8 +13,7 @@
 
 bool solveQuadratic(const float &a, const float &b, const float &c, float &x0, float &x1)
 {
-    
-//    std::cout << a<< " "<< b<< " "<< c << std::endl;
+
     float discr = b * b - 4 * a * c;
     if (discr < 0) return false;
     else if (discr == 0) {
@@ -27,7 +26,6 @@ bool solveQuadratic(const float &a, const float &b, const float &c, float &x0, f
         x0 = q / a;
         x1 = c / q;
     }
-//    std::cout << x0<< x1 << std::endl;
     return true;
 }
 

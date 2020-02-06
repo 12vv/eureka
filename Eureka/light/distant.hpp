@@ -17,8 +17,8 @@ class DistantLight : public Light {
     Vec3f dir;
     
 public:
-    DistantLight(const Matrix44f &l2w, const Vec3f &c=1, const float &i=1) : Light(l2w, c, i) {
-        l2w.multVecMatrix(Vec3f(-1, 1, -1), dir);
+    DistantLight(const Matrix44f &l2w, const Vec3f &d, const Vec3f &c=1, const float &i=1) : Light(l2w, c, i) {
+        l2w.multVecMatrix(d, dir);
         dir.normalize(); // in case the matrix scales the light
     }
     void illuminate(const Vec3f &P, Vec3f &lightDir, Vec3f &lightIntensity, float &distance) const {

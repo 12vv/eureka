@@ -15,6 +15,7 @@ class Plane : public Object {
 public:
     Plane(const Matrix44f &o2w, Material *m, const Vec3f &p, const Vec3f &n) : Object(o2w, m), position(p), normal(n) {
         o2w.multPtMatrix(p, position);
+        normal.normalize();
     }
     bool intersect(const Ray &ray, float &tNear,
                    uint32_t &triIndex,
@@ -26,6 +27,13 @@ public:
         float t = b/a;
         if(t > 0 && t < tNear)  { tNear = t; return true; }
         return false;
+//        float denom = normal.dotProduct(ray.direction());
+//        if(denom < 1e-6){
+//            Vec3f pl = position - ray.origin();
+//            float t = pl.dotProduct(normal) / denom;
+//            if(t > 0 && t < tNear)  { tNear = t; return true; }
+//        }
+//        return false;
     }
     // set normal and texture coordinates
     void getSurfaceData(const Vec3f &Phit,

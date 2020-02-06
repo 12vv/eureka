@@ -12,10 +12,10 @@
 #include "light.hpp"
 
 class PointLight : public Light {
-    Vec3f pos;
+
 public:
-    PointLight(const Matrix44f &l2w, const Vec3f &c = 1, const float &i = 1) : Light(l2w, c, i){
-        l2w.multPtMatrix(Vec3f(0, 0, 0), pos);
+    PointLight(const Matrix44f &l2w, const Vec3f &p, const Vec3f &c = 1, const float &i = 1) : Light(l2w, c, i){
+        l2w.multPtMatrix(p, pos);
     }
     void illuminate(const Vec3f &P, Vec3f &lightDir, Vec3f &lightIntensity, float &distance) const {
         lightDir = pos - P;
@@ -23,8 +23,10 @@ public:
         distance = sqrtf(r2);
         lightDir.normalize();
 //        lightDir.x /= distance, lightDir.y /= distance, lightDir.z /= distance;
-        lightIntensity = intensity * color / (4 * M_PI * r2); // light attenuation follows inverse-square law
+//        lightIntensity = intensity * color / (4 * M_PI * r2); // light attenuation follows inverse-square law
+        lightIntensity = intensity * color / (r2); 
     }
+    Vec3f pos;
 };
 
 #endif /* point_h */

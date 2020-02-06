@@ -19,9 +19,38 @@ Vec3f reflect(const Vec3f &I, const Vec3f &N)
     return I - 2 * I.dotProduct(N) * N;
 }
 
+Vec3f refract(const Vec3f &I, const Vec3f &N, const float &ior)
+{
+    float cosi = clamp(-1, 1, I.dotProduct(N));
+    float etai = 1, etat = ior;
+    Vec3f n = N;
+    if (cosi < 0) { cosi = -cosi; } else { std::swap(etai, etat); n= -N; }
+    float eta = etai / etat;
+    float k = 1 - eta * eta * (1 - cosi * cosi);
+    return k < 0 ? 0 : eta * I + (eta * cosi - sqrtf(k)) * n;
+}
 
-
-
+void fresnel(const Vec3f &I, const Vec3f &N, const float &ior, float &kr)
+{
+    float cosi = clamp(-1, 1, I.dotProduct(N));
+    float etai = 1, etat = ior;
+    if (cosi > 0) { std::swap(etai, etat); }
+    // Compute sini using Snell's law
+    float sint = etai / etat * sqrtf(std::max(0.f, 1 - cosi * cosi));
+    // Total internal reflection
+    if (sint >= 1) {
+        kr = 1;
+    }
+    else {
+        float cost = sqrtf(std::max(0.f, 1 - sint * sint));
+        cosi = fabsf(cosi);
+        float Rs = ((etat * cosi) - (etai * cost)) / ((etat * cosi) + (etai * cost));
+        float Rp = ((etai * cosi) - (etat * cost)) / ((etai * cosi) + (etat * cost));
+        kr = (Rs * Rs + Rp * Rp) / 2;
+    }
+    // As a consequence of the conservation of energy, transmittance is given by:
+    // kt = 1 - kr;
+}
 
 bool PathTracer::trace(const Ray &ray,
                        const std::vector<std::unique_ptr<Object>> &objects,
@@ -78,8 +107,8 @@ Vec3f PathTracer::castRay(const Ray &ray,
                 bool vis = !trace(tmp, objects, isectShad, kShadowRay);
                 //                    bool vis = trace(ray, objects, isectShad);  // ray here should add a bias !!!!!!!!!!!!!!!!!!!!
                 //                    std::cout << vis << std::endl;
-                hitColor += vis * isect.hitObject->albedo / M_PI * lights[i]->intensity * lights[i]->color * std::max(0.f, Nhit.dotProduct(-lightDir));
-//                 hitColor += vis * isect.hitObject->albedo * lightIntensity * std::max(0.f, Nhit.dotProduct(-lightDir));
+//                hitColor += vis * isect.hitObject->albedo / M_PI * lights[i]->intensity * lights[i]->color * std::max(0.f, Nhit.dotProduct(-lightDir));
+                 hitColor += vis * isect.hitObject->albedo * lights[i]->intensity * std::max(0.f, Nhit.dotProduct(-lightDir));
                                     float angle = radian(45);
                                     float s = texCoordinates.x * cos(angle) - texCoordinates.y * sin(angle);
                                     float t = texCoordinates.y * cos(angle) + texCoordinates.x * sin(angle);
@@ -98,6 +127,33 @@ Vec3f PathTracer::castRay(const Ray &ray,
             hitColor += 0.8 * castRay(tmp, objects, lights, options, depth + 1);
         }
 
+        
+        if((dynamic_cast< Glossy* >(type)) != nullptr){
+            Vec3f refractionColor = 0;
+            // compute fresnel
+            float kr;
+            isect.hitObject->ior = 1.4;  // self-add !!!!!!!!!
+            Vec3f dir = ray.direction();
+            fresnel(dir, Nhit, isect.hitObject->ior, kr);
+            bool outside = dir.dotProduct(Nhit) < 0;
+            Vec3f bias = options.bias * Nhit;
+            // compute refraction if it is not a case of total internal reflection
+            if (kr < 1) {
+                Vec3f refractionDirection = refract(dir, Nhit, isect.hitObject->ior).normalize();
+                Vec3f refractionRayOrig = outside ? Phit - bias : Phit + bias;
+                Ray tmp(refractionRayOrig, refractionDirection);
+                refractionColor = castRay(tmp, objects, lights, options, depth + 1);
+            }
+            
+            Vec3f reflectionDirection = reflect(dir, Nhit).normalize();
+            Vec3f reflectionRayOrig = outside ? Phit + bias : Phit - bias;
+            Ray tmp(reflectionDirection, reflectionRayOrig);
+            Vec3f reflectionColor = castRay(tmp, objects, lights, options, depth + 1);
+            
+            // mix the two
+            hitColor += reflectionColor * kr + refractionColor * (1 - kr);
+        }
+        
 
     }
     else{

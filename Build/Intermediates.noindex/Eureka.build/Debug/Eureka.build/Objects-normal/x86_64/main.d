@@ -22,4 +22,5 @@ dependencies: /Users/jaythan/workspace/Eureka/Eureka/main.cpp \
   /Users/jaythan/workspace/Eureka/Eureka/./light/point.hpp \
   /Users/jaythan/workspace/Eureka/Eureka/./object/plane.hpp \
   /Users/jaythan/workspace/Eureka/Eureka/./material/material.hpp \
-  /Users/jaythan/workspace/Eureka/Eureka/./material/mirror.hpp
+  /Users/jaythan/workspace/Eureka/Eureka/./material/mirror.hpp \
+  /Users/jaythan/workspace/Eureka/Eureka/./material/glossy.hpp
