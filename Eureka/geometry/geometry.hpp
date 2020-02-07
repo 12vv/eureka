@@ -83,7 +83,7 @@ public:
     Vec3 operator / (const U u) const
     { double inv = 1.0/u; return Vec3(x * inv, y * inv, z * inv); }
     
-    T crossProduct(const Vec3<T> &v) const
+    Vec3<T> crossProduct(const Vec3<T> &v) const
     { return Vec3<T>(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x); }
     T norm() const
     { return x * x + y * y + z * z; }

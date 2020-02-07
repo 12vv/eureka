@@ -64,6 +64,31 @@ std::uniform_real_distribution<> dis(0, 1);
 //};
 
 
+Matrix44f lookAt(const Vec3f& from, const Vec3f& to, const Vec3f& tmp = Vec3f(0, 1, 0))
+{
+    Vec3f forward = (from - to).normalize();
+    Vec3f t = tmp;
+    Vec3f right = t.normalize().crossProduct(forward);
+    Vec3f up = forward.crossProduct(right);
+    
+    Matrix44f camToWorld;
+    
+    camToWorld[0][0] = right.x;
+    camToWorld[0][1] = right.y;
+    camToWorld[0][2] = right.z;
+    camToWorld[1][0] = up.x;
+    camToWorld[1][1] = up.y;
+    camToWorld[1][2] = up.z;
+    camToWorld[2][0] = forward.x;
+    camToWorld[2][1] = forward.y;
+    camToWorld[2][2] = forward.z;
+    
+    camToWorld[3][0] = from.x;
+    camToWorld[3][1] = from.y;
+    camToWorld[3][2] = from.z;
+    
+    return camToWorld;
+}
 
 int main(int argc, char **argv)
 {
@@ -85,6 +110,7 @@ int main(int argc, char **argv)
     Matrix44f l2w(11.146836, -5.781569, -0.0605886, 0, -1.902827, -3.543982, -11.895445, 0, 5.459804, 10.568624, -4.02205, 0, 0, 0, 0, 1);
 //    Matrix44f l2w;
     
+    
     // generate a scene made of random spheres
     uint32_t numSpheres = 1;
     gen.seed(0);
@@ -101,6 +127,7 @@ int main(int argc, char **argv)
     objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), 4, Vec3f(30, 0, 0))));
     
     objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 1, 0)), 4, Vec3f(15, 0, 20))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 1, 0)), 4, Vec3f(10, 0, 50))));
     
     objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Diffuse(Material::kDiffuse, Vec3f(1, 0, 0)), Vec3f(0, -4, 0), Vec3f(0, 10, 0))));
     objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), Vec3f(-10, 0, 0), Vec3f(1, 0, 0))));
@@ -113,9 +140,12 @@ int main(int argc, char **argv)
     options.fov = 96.87;
     options.width = 1024;
     options.height = 747;
-    options.cameraToWorld = Matrix44f(0.999945, 0, 0.0104718, 0, 0.00104703, 0.994989, -0.0999803, 0, -0.0104193, 0.0999858, 0.994934, 0, -0.978596, 17.911879, 75.483369, 1);
+//    options.cameraToWorld = Matrix44f(0.999945, 0, 0.0104718, 0, 0.00104703, 0.994989, -0.0999803, 0, -0.0104193, 0.0999858, 0.994934, 0, -0.978596, 17.911879, 75.483369, 1);
 
-
+    Matrix44f test = lookAt(Vec3f(10, 30, 80), Vec3f(15, 0, 20));
+    options.cameraToWorld = test;
+    std::cout << options.cameraToWorld << std::endl;
+    
 //    const std::unique_ptr<DistantLight> light = std::unique_ptr<DistantLight>(new DistantLight(l2w, 1, 1));
     
 //    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, 1, 1)));
