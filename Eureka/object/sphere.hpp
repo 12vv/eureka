@@ -74,7 +74,8 @@ public:
                         const uint32_t &triIndex,   // not used for sphere
                         const Vec2f &uv,            // not used for sphere
                         Vec3f &Nhit,
-                        Vec2f &textureCoordinates) const {
+                        Vec2f &textureCoordinates) const
+    {
         Nhit = Phit - center;
         Nhit.normalize();
         // remap from range[-pi, pi] to range[0, 1]

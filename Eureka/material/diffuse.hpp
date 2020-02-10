@@ -13,7 +13,7 @@
 
 class Diffuse : public Material {
 public:
-    Diffuse(Type type, const Vec3f &c) : Material(type), color(c) {
+    Diffuse(Type type) : Material(type) {
         assert(type == kDiffuse);
         name = "diffuse";
     }
@@ -39,7 +39,7 @@ public:
 ////                    hitColor += vis * pattern * lightIntensity * std::max(0.f, Phit.dotProduct(-lightDir));
 //        }
 //    }
-    Vec3f color;
+
 };
 
 #endif /* diffuse_h */

@@ -13,11 +13,11 @@
 
 class Mirror : public Material {
 public:
-    Mirror(Type type, const Vec3f &c) : Material(type), color(c) {
+    Mirror(Type type) : Material(type) {
         assert(type == kReflect);
         name = "mirror";
     }
-    Vec3f color;
+
 };
 
 #endif /* mirror_h */

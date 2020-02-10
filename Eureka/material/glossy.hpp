@@ -13,11 +13,11 @@
 
 class Glossy : public Material {
 public:
-    Glossy(Type type, const Vec3f &c) : Material(type), color(c) {
+    Glossy(Type type) : Material(type) {
         assert(type == kGlossy);
         name = "glossy";
     }
-    Vec3f color;
+
 };
 
 #endif /* glossy_h */
