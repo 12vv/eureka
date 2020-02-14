@@ -139,8 +139,8 @@ public:
                  const std::unique_ptr<uint32_t []> &faceIndex,
                  const std::unique_ptr<uint32_t []> &vertsIndex,
                  const std::unique_ptr<Vec3f []> &verts,
-                 std::unique_ptr<Vec3f []> &normals,
-                 std::unique_ptr<Vec2f []> &st) :
+                 const std::unique_ptr<Vec3f []> &normals = nullptr,
+                 const std::unique_ptr<Vec2f []> &st = nullptr) :
     Object(o2w, m),
     numTris(0)
     {
@@ -165,7 +165,7 @@ public:
         trisIndex = std::unique_ptr<uint32_t []>(new uint32_t [numTris * 3]);
         uint32_t l = 0;
         N = std::unique_ptr<Vec3f []>(new Vec3f[numTris * 3]);
-        sts = std::unique_ptr<Vec2f []>(new Vec2f[numTris * 3]);
+        texCoordinates = std::unique_ptr<Vec2f []>(new Vec2f[numTris * 3]);
         
         Matrix44f transformNormals = worldToObject.transpose();
         // generate the triangle index array and set normals and st coordinates
@@ -181,9 +181,9 @@ public:
                 N[l].normalize();
                 N[l + 1].normalize();
                 N[l + 2].normalize();
-                sts[l] = st[k];
-                sts[l + 1] = st[k + j + 1];
-                sts[l + 2] = st[k + j + 2];
+                texCoordinates[l] = st[k];
+                texCoordinates[l + 1] = st[k + j + 1];
+                texCoordinates[l + 2] = st[k + j + 2];
                 l += 3;
             }
             k += faceIndex[i];
@@ -236,18 +236,18 @@ public:
         // for safety
         Nhit.normalize();
         // texture coordinates
-        const Vec2f &st0 = sts[triIndex * 3];
-        const Vec2f &st1 = sts[triIndex * 3 + 1];
-        const Vec2f &st2 = sts[triIndex * 3 + 2];
+        const Vec2f &st0 = texCoordinates[triIndex * 3];
+        const Vec2f &st1 = texCoordinates[triIndex * 3 + 1];
+        const Vec2f &st2 = texCoordinates[triIndex * 3 + 2];
         textureCoordinates = (1 - uv.x - uv.y) * st0 + uv.x * st1 + uv.y * st2;
     }
     // member variables
-    uint32_t numTris;                       // number of triangles
-    std::unique_ptr<Vec3f []> P;            // triangles vertex position
-    std::unique_ptr<uint32_t []> trisIndex; // vertex index array
-    std::unique_ptr<Vec3f []> N;            // triangles vertex normals
-    std::unique_ptr<Vec2f []> sts;          // triangles texture coordinates
-    bool smoothShading = true;              // smooth shading by default
+    uint32_t numTris;                         // number of triangles
+    std::unique_ptr<Vec3f []> P;              // triangles vertex position
+    std::unique_ptr<uint32_t []> trisIndex;   // vertex index array
+    std::unique_ptr<Vec3f []> N;              // triangles vertex normals
+    std::unique_ptr<Vec2f []> texCoordinates; // triangles texture coordinates
+    bool smoothShading = true;                // smooth shading by default
 };
 
 

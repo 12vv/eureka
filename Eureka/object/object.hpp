@@ -34,6 +34,7 @@ public:
     Vec3f albedo = 0.5;
 //    Vec3f albedo = 0.18;
 //    Vec3f color = Vec3f(0.5, 0.2, 0.1);
+    Vec3f color = 1;
 };
 
 #endif /* object_h */

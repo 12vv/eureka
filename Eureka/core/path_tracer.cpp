@@ -52,6 +52,30 @@ void fresnel(const Vec3f &I, const Vec3f &N, const float &ior, float &kr)
     // kt = 1 - kr;
 }
 
+void createCoordinateSystem(const Vec3f &N, Vec3f &Nt, Vec3f &Nb)
+{
+    if (std::fabs(N.x) > std::fabs(N.y))
+        Nt = Vec3f(N.z, 0, -N.x) / sqrtf(N.x * N.x + N.z * N.z);
+    else
+        Nt = Vec3f(0, -N.z, N.y) / sqrtf(N.y * N.y + N.z * N.z);
+    Nb = N.crossProduct(Nt);
+}
+
+
+Vec3f uniformSampleHemisphere(const float &r1, const float &r2)
+{
+    // cos(theta) = u1 = y
+    // cos^2(theta) + sin^2(theta) = 1 -> sin(theta) = srtf(1 - cos^2(theta))
+    float sinTheta = sqrtf(1 - r1 * r1);
+    float phi = 2 * M_PI * r2;
+    float x = sinTheta * cosf(phi);
+    float z = sinTheta * sinf(phi);
+    return Vec3f(x, r1, z);
+}
+
+std::default_random_engine generator;
+std::uniform_real_distribution<float> distribution(0, 1);
+
 bool PathTracer::trace(const Ray &ray,
                        const std::vector<std::unique_ptr<Object>> &objects,
                        IsectInfo &isect,
@@ -97,26 +121,53 @@ Vec3f PathTracer::castRay(const Ray &ray,
         Material *type = isect.hitObject->type;
         
         if((dynamic_cast< Diffuse* >(type)) != nullptr){
-
+            Vec3f directLighting = 0;
             for(uint32_t i = 0; i < lights.size(); i++){
                 Vec3f lightDir, lightIntensity;
                 IsectInfo isectShad;
                 lights[i]->illuminate(Phit, lightDir, lightIntensity, isectShad.tNear);
+
                 
                 Ray tmp(Phit + Nhit * options.bias, -lightDir);
                 bool vis = !trace(tmp, objects, isectShad, kShadowRay);
                 //                    bool vis = trace(ray, objects, isectShad);  // ray here should add a bias !!!!!!!!!!!!!!!!!!!!
                 //                    std::cout << vis << std::endl;
 //                hitColor += vis * isect.hitObject->albedo / M_PI * lights[i]->intensity * lights[i]->color * std::max(0.f, Nhit.dotProduct(-lightDir));
-                 hitColor += vis * isect.hitObject->albedo * lights[i]->intensity * std::max(0.f, Nhit.dotProduct(-lightDir));
-                                    float angle = radian(45);
-                                    float s = texCoordinates.x * cos(angle) - texCoordinates.y * sin(angle);
-                                    float t = texCoordinates.y * cos(angle) + texCoordinates.x * sin(angle);
-                                    float scaleS = 20, scaleT = 20;
-//                                    float pattern = (modulo(s * scaleS) < 0.5);
-                                    float pattern = (modulo(s * scaleS) < 0.5) ^ (modulo(t * scaleT) < 0.5);
+                 directLighting += vis * lightIntensity * std::max(0.f, Nhit.dotProduct(-lightDir)) * isect.hitObject->color;
+                
+//                std::cout << lightIntensity << std::endl;
+//                                    float angle = radian(45);
+//                                    float s = texCoordinates.x * cos(angle) - texCoordinates.y * sin(angle);
+//                                    float t = texCoordinates.y * cos(angle) + texCoordinates.x * sin(angle);
+//                                    float scaleS = 20, scaleT = 20;
+////                                    float pattern = (modulo(s * scaleS) < 0.5);
+//                                    float pattern = (modulo(s * scaleS) < 0.5) ^ (modulo(t * scaleT) < 0.5);
 //                                    hitColor += vis * pattern * lightIntensity * std::max(0.f, Phit.dotProduct(-lightDir));
+                
             }
+            Vec3f indirectLigthing = 0;
+            
+//            uint32_t N = 8;// / (depth + 1);
+//            Vec3f Nt, Nb;
+//            createCoordinateSystem(Nhit, Nt, Nb);
+//            float pdf = 1 / (2 * M_PI);
+//            for (uint32_t n = 0; n < N; ++n) {
+//                float r1 = distribution(generator);
+//                float r2 = distribution(generator);
+//                Vec3f sample = uniformSampleHemisphere(r1, r2);
+//                Vec3f sampleWorld(
+//                                  sample.x * Nb.x + sample.y * Nhit.x + sample.z * Nt.x,
+//                                  sample.x * Nb.y + sample.y * Nhit.y + sample.z * Nt.y,
+//                                  sample.x * Nb.z + sample.y * Nhit.z + sample.z * Nt.z);
+//
+//                Ray tmp(Phit + sampleWorld * options.bias, sampleWorld);
+//                // don't forget to divide by PDF and multiply by cos(theta)
+//                indirectLigthing += r1 * castRay(tmp, objects, lights, options, depth + 1) / pdf;
+//            }
+//            // divide by N
+//            indirectLigthing /= (float)N;
+            
+            hitColor = (directLighting / M_PI + 2 * indirectLigthing) * isect.hitObject->albedo; 
         }
         
 
@@ -158,6 +209,7 @@ Vec3f PathTracer::castRay(const Ray &ray,
     }
     else{
         hitColor = options.backgroundColor;
+//        hitColor = 1;
     }
     return hitColor;
 }

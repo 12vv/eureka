@@ -28,6 +28,7 @@
 #include <limits>
 #include <random>
 #include <sstream>
+#include <chrono>
 
 #include <unistd.h>  
 
@@ -47,21 +48,22 @@
 #include "./material/mirror.hpp"
 #include "./material/glossy.hpp"
 
+template <> const Matrix44f Matrix44f::kIdentity = Matrix44f();
 
 TriangleMesh* loadPolyMeshFromFile(const char *file, const Matrix44f &o2w, Material *m)
 {
-    char *buffer;
-    //也可以将buffer作为输出参数
-    if((buffer = getcwd(NULL, 0)) == NULL)
-    {
-        perror("getcwd error");
-    }
-    else
-    {
-        printf("%s\n", buffer);
-        free(buffer);
-    }
-        
+//    char *buffer;
+//    //也可以将buffer作为输出参数
+//    if((buffer = getcwd(NULL, 0)) == NULL)
+//    {
+//        perror("getcwd error");
+//    }
+//    else
+//    {
+//        printf("%s\n", buffer);
+//        free(buffer);
+//    }
+    
     std::ifstream ifs;
     try {
         ifs.open(file);
@@ -178,22 +180,13 @@ int main(int argc, char **argv)
 //    Matrix44f l2w;
     
     
-    // generate a scene made of random spheres
-    uint32_t numSpheres = 1;
-    gen.seed(0);
-    for (uint32_t i = 0; i < numSpheres; ++i) {
-//        Vec3f randPos((0.5 - dis(gen)) * 10, (0.5 - dis(gen)) * 10, (0.5 + dis(gen) * 10));
-//        float randRadius = (0.5 + dis(gen) * 0.5);
-//        objects.push_back(std::unique_ptr<Object>(new Sphere(randPos, randRadius)));
-//        objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse, Vec3f(0, 0, 1)), 5, Vec3f(6, 0, 0))));
-    }
 //    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect), 4, Vec3f(-3, 0, 0))));
 //
-//
-//    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Glossy(Material::kGlossy), 5, Vec3f(12, 15, 35))));
-//    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect), 4, Vec3f(30, 0, 0))));
-//
-//    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), 4, Vec3f(15, 0, 20))));
+///////////////////////
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Glossy(Material::kGlossy), 5, Vec3f(12, 15, 35))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect), 4, Vec3f(30, 0, 0))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), 4, Vec3f(15, 0, 20))));
+    
 //    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), 4, Vec3f(10, 0, 50))));
 
     objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Diffuse(Material::kDiffuse), Vec3f(0, -4, 0), Vec3f(0, 10, 0))));
@@ -202,30 +195,37 @@ int main(int argc, char **argv)
 //    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), Vec3f(0, 25, 0), Vec3f(0, -10, 0))));
 //    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), Vec3f(65, 0, 0), Vec3f(-1, 0, 0))));
     
-    Matrix44f ti;
-    TriangleMesh *mesh3 = loadPolyMeshFromFile("./cylinder.geo", ti, new Glossy(Material::kGlossy));
-    if (mesh3 != nullptr) {
-        mesh3->ior = 1.5;
-        objects.push_back(std::unique_ptr<Object>(mesh3));
-    }
-    Matrix44f ti2;
-    TriangleMesh *mesh4 = loadPolyMeshFromFile("./pen.geo", ti2, new Diffuse(Material::kDiffuse));
-    if (mesh4 != nullptr) {
-        mesh4->albedo = 0.18;
-        mesh4->smoothShading = false;
-        objects.push_back(std::unique_ptr<Object>(mesh4));
-    }
+
+//    TriangleMesh *mesh = loadPolyMeshFromFile("./cylinder.geo", Matrix44f::kIdentity, new Glossy(Material::kGlossy));
+//    if (mesh != nullptr) {
+//        mesh->ior = 1.5;
+//        objects.push_back(std::unique_ptr<Object>(mesh));
+//    }
+
+//    TriangleMesh *mesh4 = loadPolyMeshFromFile("./pen.geo", Matrix44f::kIdentity, new Diffuse(Material::kDiffuse));
+//    if (mesh4 != nullptr) {
+//        mesh4->albedo = 0.18;
+//        mesh4->smoothShading = false;
+//        objects.push_back(std::unique_ptr<Object>(mesh4));
+//    }
+
+
+//    TriangleMesh *mesh3 = loadPolyMeshFromFile("./cow.geo", Matrix44f::kIdentity, new Diffuse(Material::kDiffuse));
+//    if (mesh3 != nullptr) {
+//        mesh3->ior = 1.5;
+//        objects.push_back(std::unique_ptr<Object>(mesh3));
+//    }
     
     
     // setting up options
     Options options;
 //    options.fov = 36.87;
-    options.fov = 96.87;
+    options.fov = 56.87;
     options.width = 1024;
     options.height = 747;
 //    options.cameraToWorld = Matrix44f(0.999945, 0, 0.0104718, 0, 0.00104703, 0.994989, -0.0999803, 0, -0.0104193, 0.0999858, 0.994934, 0, -0.978596, 17.911879, 75.483369, 1);
 
-    Matrix44f test = camToWorld(Vec3f(10, 30, 80), Vec3f(15, 0, 20));
+    Matrix44f test = camToWorld(Vec3f(20, 8, 80), Vec3f(10, 10, 20));
     options.cameraToWorld = test;
     std::cout << options.cameraToWorld << std::endl;
     
@@ -233,14 +233,18 @@ int main(int argc, char **argv)
     
 //    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, 1, 1)));
     // finally, render
-    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, Vec3f(0, 10, -1), Vec3f(0.5, 0.5, 1), 1)));
-//    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1)));
-//    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(5, 1, 0), Vec3f(0.1, 0.5, 1), 1)));
+    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, Vec3f(0, 10, -1), Vec3f(1, 1, 1), 1)));
+    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1)));
+    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(5, 1, 0), Vec3f(0.1, 0.5, 1), 1)));
     
     
-
+    auto timeStart = std::chrono::high_resolution_clock::now();
     
     pt.render(options, objects, lights);
+    
+    auto timeEnd = std::chrono::high_resolution_clock::now();
+    auto passedTime = std::chrono::duration<double, std::milli>(timeEnd - timeStart).count();
+    std::cerr << passedTime << std::endl;
     
     return 0;
 }

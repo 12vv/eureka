@@ -46,6 +46,7 @@ public:
 
     }
     Vec3f position, normal;
+    Vec3f albedo = Vec3f(0.225, 0.144, 0.144);
 };
 
 #endif /* plane_h */

@@ -20,8 +20,9 @@
 const float kInfinity = std::numeric_limits<double>::max();
 static const float kEpsilon = 1e-8;
 //const float E = 2.718281828459045;
-static const Vec3f kDefaultBackgroundColor = Vec3f(0.235294, 0.67451, 0.843137);
+static const Vec3f kDefaultBackgroundColor = Vec3f(0.5, 0.7, 1.0);
 //enum MaterialType { kDiffuse, kReflection, kReflectionAndRefraction };
+
 
 inline
 float radian(const float &degree){
@@ -50,7 +51,7 @@ struct Options
     Vec3f backgroundColor = kDefaultBackgroundColor;
     Matrix44f cameraToWorld;
     float bias = 0.0002;
-    uint32_t maxDepth = 5;
+    uint32_t maxDepth = 2;
 }; 
 
 

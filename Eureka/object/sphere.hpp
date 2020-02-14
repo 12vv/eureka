@@ -85,6 +85,7 @@ public:
     
     float radius, radius2;
     Vec3f center;
+    Vec3f albedo = 0.9;
 //    Material material;
 };
 

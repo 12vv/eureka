@@ -140,6 +140,7 @@ class Matrix44
 public:
     
     T x[4][4] = {{1,0,0,0},{0,1,0,0},{0,0,1,0},{0,0,0,1}};
+    static const Matrix44 kIdentity;
     
     Matrix44() {}
     
