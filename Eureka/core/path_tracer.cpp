@@ -122,6 +122,7 @@ Vec3f PathTracer::castRay(const Ray &ray,
         
         if((dynamic_cast< Diffuse* >(type)) != nullptr){
             Vec3f directLighting = 0;
+            Vec3f diffuse = 0, specular = 0;
             for(uint32_t i = 0; i < lights.size(); i++){
                 Vec3f lightDir, lightIntensity;
                 IsectInfo isectShad;
@@ -130,23 +131,23 @@ Vec3f PathTracer::castRay(const Ray &ray,
                 
                 Ray tmp(Phit + Nhit * options.bias, -lightDir);
                 bool vis = !trace(tmp, objects, isectShad, kShadowRay);
-                //                    bool vis = trace(ray, objects, isectShad);  // ray here should add a bias !!!!!!!!!!!!!!!!!!!!
-                //                    std::cout << vis << std::endl;
+
 //                hitColor += vis * isect.hitObject->albedo / M_PI * lights[i]->intensity * lights[i]->color * std::max(0.f, Nhit.dotProduct(-lightDir));
-                 directLighting += vis * lightIntensity * std::max(0.f, Nhit.dotProduct(-lightDir)) * isect.hitObject->color;
                 
-//                std::cout << lightIntensity << std::endl;
-//                                    float angle = radian(45);
-//                                    float s = texCoordinates.x * cos(angle) - texCoordinates.y * sin(angle);
-//                                    float t = texCoordinates.y * cos(angle) + texCoordinates.x * sin(angle);
-//                                    float scaleS = 20, scaleT = 20;
-////                                    float pattern = (modulo(s * scaleS) < 0.5);
-//                                    float pattern = (modulo(s * scaleS) < 0.5) ^ (modulo(t * scaleT) < 0.5);
-//                                    hitColor += vis * pattern * lightIntensity * std::max(0.f, Phit.dotProduct(-lightDir));
+                // kphong
+                // diffuse components
+                diffuse += vis * lightIntensity * std::max(0.f, Nhit.dotProduct(-lightDir)) * isect.hitObject->albedo;
+                // specular components
+                Vec3f R = reflect(lightDir, Nhit);
+                specular += vis * lightIntensity * std::pow(std::max(0.f, R.dotProduct(-ray.dir)), isect.hitObject->n);
+                directLighting = diffuse * isect.hitObject->Kd + specular * isect.hitObject->Ks;
+                
+//                directLighting += vis * lightIntensity * std::max(0.f, Nhit.dotProduct(-lightDir)) * isect.hitObject->albedo;
+//                std::cout << isect.hitObject->albedo << std::endl;
                 
             }
             Vec3f indirectLigthing = 0;
-            
+
 //            uint32_t N = 8;// / (depth + 1);
 //            Vec3f Nt, Nb;
 //            createCoordinateSystem(Nhit, Nt, Nb);
@@ -166,8 +167,9 @@ Vec3f PathTracer::castRay(const Ray &ray,
 //            }
 //            // divide by N
 //            indirectLigthing /= (float)N;
-            
-            hitColor = (directLighting / M_PI + 2 * indirectLigthing) * isect.hitObject->albedo; 
+////            std::cout << indirectLigthing << std::endl;
+
+            hitColor = (directLighting / M_PI + 2 * indirectLigthing) * isect.hitObject->albedo;
         }
         
 
@@ -183,7 +185,7 @@ Vec3f PathTracer::castRay(const Ray &ray,
             Vec3f refractionColor = 0;
             // compute fresnel
             float kr;
-            isect.hitObject->ior = 1.4;  // self-add !!!!!!!!!
+            isect.hitObject->ior = 1.2;  // self-add !!!!!!!!!
             Vec3f dir = ray.direction();
             fresnel(dir, Nhit, isect.hitObject->ior, kr);
             bool outside = dir.dotProduct(Nhit) < 0;

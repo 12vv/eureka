@@ -50,7 +50,7 @@
 
 template <> const Matrix44f Matrix44f::kIdentity = Matrix44f();
 
-TriangleMesh* loadPolyMeshFromFile(const char *file, const Matrix44f &o2w, Material *m)
+TriangleMesh* loadPolyMeshFromFile(const char *file, const Matrix44f &o2w, Material *m, const Vec3f &a)
 {
 //    char *buffer;
 //    //也可以将buffer作为输出参数
@@ -107,7 +107,7 @@ TriangleMesh* loadPolyMeshFromFile(const char *file, const Matrix44f &o2w, Mater
             ss >> st[i].x >> st[i].y;
         }
         
-        return new TriangleMesh(o2w, m, numFaces, faceIndex, vertsIndex, verts, normals, st);
+        return new TriangleMesh(o2w, m, a, numFaces, faceIndex, vertsIndex, verts, normals, st);
     }
     catch (...) {
         ifs.close();
@@ -183,16 +183,17 @@ int main(int argc, char **argv)
 //    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect), 4, Vec3f(-3, 0, 0))));
 //
 ///////////////////////
-    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Glossy(Material::kGlossy), 5, Vec3f(12, 15, 35))));
-    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect), 4, Vec3f(30, 0, 0))));
-    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), 4, Vec3f(15, 0, 20))));
+//    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Glossy(Material::kGlossy), Vec3f(0.5, 0.5, 0.5), 5, Vec3f(20, 1, 50))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect), Vec3f(0, 0, 0), 4, Vec3f(30, 0, 20))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), Vec3f(1, 1, 1), 4, Vec3f(15, 0, 20))));
     
-//    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), 4, Vec3f(10, 0, 50))));
+//    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), Vec3f(0.9, 0.9, 1), 4, Vec3f(0, 0, 0))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), Vec3f(0.9, 0.9, 1), 4, Vec3f(20, 0, 35))));
 
-    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Diffuse(Material::kDiffuse), Vec3f(0, -4, 0), Vec3f(0, 10, 0))));
-    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect), Vec3f(-10, 0, 0), Vec3f(1, 0, 0))));
+    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Diffuse(Material::kDiffuse), Vec3f(1, 1, 1), Vec3f(0, -4, 0), Vec3f(0, 10, 0))));
+    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect), Vec3f(0.5, 0.5, 0.5), Vec3f(0, 0, 0), Vec3f(1, 0, 0))));
     
-//    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), Vec3f(0, 25, 0), Vec3f(0, -10, 0))));
+//    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect), Vec3f(0.5, 0.5, 0.5), Vec3f(40, 0, 20), Vec3f(-1, 0, 0))));
 //    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), Vec3f(65, 0, 0), Vec3f(-1, 0, 0))));
     
 
@@ -210,7 +211,7 @@ int main(int argc, char **argv)
 //    }
 
 
-//    TriangleMesh *mesh3 = loadPolyMeshFromFile("./cow.geo", Matrix44f::kIdentity, new Diffuse(Material::kDiffuse));
+//    TriangleMesh *mesh3 = loadPolyMeshFromFile("./cow.geo", Matrix44f::kIdentity, new Diffuse(Material::kDiffuse), Vec3f(0.5, 0.5, 0.5));
 //    if (mesh3 != nullptr) {
 //        mesh3->ior = 1.5;
 //        objects.push_back(std::unique_ptr<Object>(mesh3));
@@ -220,22 +221,20 @@ int main(int argc, char **argv)
     // setting up options
     Options options;
 //    options.fov = 36.87;
-    options.fov = 56.87;
+    options.fov = 36.87;
     options.width = 1024;
     options.height = 747;
 //    options.cameraToWorld = Matrix44f(0.999945, 0, 0.0104718, 0, 0.00104703, 0.994989, -0.0999803, 0, -0.0104193, 0.0999858, 0.994934, 0, -0.978596, 17.911879, 75.483369, 1);
 
-    Matrix44f test = camToWorld(Vec3f(20, 8, 80), Vec3f(10, 10, 20));
+    Matrix44f test = camToWorld(Vec3f(10, 15, 80), Vec3f(10, 10, 20));
     options.cameraToWorld = test;
     std::cout << options.cameraToWorld << std::endl;
     
-//    const std::unique_ptr<DistantLight> light = std::unique_ptr<DistantLight>(new DistantLight(l2w, 1, 1));
-    
-//    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, 1, 1)));
+
     // finally, render
     lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, Vec3f(0, 10, -1), Vec3f(1, 1, 1), 1)));
-    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(0, 1, 0), Vec3f(1, 1, 1), 1)));
-    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(5, 1, 0), Vec3f(0.1, 0.5, 1), 1)));
+    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(0, 2, 20), Vec3f(1, 1, 1), 1)));
+    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(10, 10, 10), Vec3f(0.1, 0.5, 1), 1)));
     
     
     auto timeStart = std::chrono::high_resolution_clock::now();

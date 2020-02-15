@@ -135,13 +135,14 @@ class TriangleMesh : public Object{
 public:
     TriangleMesh(const Matrix44f &o2w,
                  Material *m,
+                 const Vec3f &a,
                  const uint32_t nfaces,
                  const std::unique_ptr<uint32_t []> &faceIndex,
                  const std::unique_ptr<uint32_t []> &vertsIndex,
                  const std::unique_ptr<Vec3f []> &verts,
                  const std::unique_ptr<Vec3f []> &normals = nullptr,
                  const std::unique_ptr<Vec2f []> &st = nullptr) :
-    Object(o2w, m),
+    Object(o2w, m, a),
     numTris(0)
     {
         uint32_t k = 0, maxVertIndex = 0;

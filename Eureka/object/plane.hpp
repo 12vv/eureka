@@ -13,7 +13,7 @@
 
 class Plane : public Object {
 public:
-    Plane(const Matrix44f &o2w, Material *m, const Vec3f &p, const Vec3f &n) : Object(o2w, m), position(p), normal(n) {
+    Plane(const Matrix44f &o2w, Material *m, const Vec3f &a, const Vec3f &p, const Vec3f &n) : Object(o2w, m, a), position(p), normal(n) {
         o2w.multPtMatrix(p, position);
         normal.normalize();
     }
@@ -46,7 +46,7 @@ public:
 
     }
     Vec3f position, normal;
-    Vec3f albedo = Vec3f(0.225, 0.144, 0.144);
+//    Vec3f albedo = 0.9;
 };
 
 #endif /* plane_h */

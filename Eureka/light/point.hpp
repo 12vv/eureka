@@ -18,13 +18,14 @@ public:
         l2w.multPtMatrix(p, pos);
     }
     void illuminate(const Vec3f &P, Vec3f &lightDir, Vec3f &lightIntensity, float &distance) const {
-        lightDir = pos - P;
+        lightDir = P - pos;
         float r2 = lightDir.norm();  // square distance
         distance = sqrtf(r2);
         lightDir.normalize();
 //        lightDir.x /= distance, lightDir.y /= distance, lightDir.z /= distance;
-//        lightIntensity = intensity * color / (4 * M_PI * r2); // light attenuation follows inverse-square law
-        lightIntensity = intensity * color / (r2); 
+        lightIntensity = intensity * color / (4 * M_PI * r2); // light attenuation follows inverse-square law
+//        lightIntensity = intensity * color / (r2);
+//        std::cout << lightDir << std::endl;
     }
     Vec3f pos;
 };
