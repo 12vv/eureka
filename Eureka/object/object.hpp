@@ -28,16 +28,13 @@ public:
                                 Vec2f &) const = 0;
     Matrix44f objectToWorld, worldToObject;
 //    Material type = Material::kDiffuse;
-//    Material *type = new Diffuse(Material::kDiffuse, Vec3f(0, 0, 1));
     Material *type = nullptr;
     float ior = 1; // index of refraction
-//    Vec3f albedo = 0.5;
-    Vec3f albedo = 0.5;
-//    Vec3f color = Vec3f(0.5, 0.2, 0.1);
-//    Vec3f color = 0.2;
-    float Kd = 0.96; // phong model diffuse weight
-    float Ks = 0.04; // phong model specular weight
-    float n = 2;   // phong specular exponent
+    Vec3f albedo = 0.18;
+
+    float Kd = 0.8; // phong model diffuse weight
+    float Ks = 0.2; // phong model specular weight
+    float n = 10;   // phong specular exponent
 };
 
 #endif /* object_h */

@@ -221,12 +221,12 @@ int main(int argc, char **argv)
     // setting up options
     Options options;
 //    options.fov = 36.87;
-    options.fov = 36.87;
+    options.fov = 56.87;
     options.width = 1024;
     options.height = 747;
 //    options.cameraToWorld = Matrix44f(0.999945, 0, 0.0104718, 0, 0.00104703, 0.994989, -0.0999803, 0, -0.0104193, 0.0999858, 0.994934, 0, -0.978596, 17.911879, 75.483369, 1);
 
-    Matrix44f test = camToWorld(Vec3f(10, 15, 80), Vec3f(10, 10, 20));
+    Matrix44f test = camToWorld(Vec3f(5, 12, 100), Vec3f(10, 10, 1));
     options.cameraToWorld = test;
     std::cout << options.cameraToWorld << std::endl;
     
