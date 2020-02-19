@@ -141,7 +141,7 @@ Vec3f PathTracer::castRay(const Ray &ray,
                 Vec3f R = reflect(lightDir, Nhit);
                 specular += vis * lightIntensity * std::pow(std::max(0.f, R.dotProduct(-ray.dir)), isect.hitObject->n);
                 directLighting = diffuse * isect.hitObject->Kd + specular * isect.hitObject->Ks;
-                
+//                std::cout << diffuse << specular << std::endl;
 //                directLighting += vis * lightIntensity * std::max(0.f, Nhit.dotProduct(-lightDir)) * isect.hitObject->albedo;
 //                std::cout << isect.hitObject->albedo << std::endl;
                 
@@ -151,7 +151,7 @@ Vec3f PathTracer::castRay(const Ray &ray,
 //            uint32_t N = 8;// / (depth + 1);
 //            Vec3f Nt, Nb;
 //            createCoordinateSystem(Nhit, Nt, Nb);
-//            float pdf = 1 / (2 * M_PI);
+//            float pdf = 20 / (2 * M_PI);
 //            for (uint32_t n = 0; n < N; ++n) {
 //                float r1 = distribution(generator);
 //                float r2 = distribution(generator);
@@ -167,7 +167,7 @@ Vec3f PathTracer::castRay(const Ray &ray,
 //            }
 //            // divide by N
 //            indirectLigthing /= (float)N;
-////            std::cout << indirectLigthing << std::endl;
+//            std::cout << directLighting << indirectLigthing << std::endl;
 
             hitColor = (directLighting / M_PI + 2 * indirectLigthing) * isect.hitObject->albedo;
         }
