@@ -35,6 +35,10 @@ public:
     float Kd = 0.8; // phong model diffuse weight
     float Ks = 0.2; // phong model specular weight
     float n = 10;   // phong specular exponent
+    
+//    float Kd = 0.1; 
+//    float Ks = 0.9;
+//    float n = 2;
 };
 
 #endif /* object_h */

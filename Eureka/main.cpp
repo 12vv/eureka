@@ -180,21 +180,21 @@ int main(int argc, char **argv)
 //    Matrix44f l2w;
     
     
-//    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect), 4, Vec3f(-3, 0, 0))));
-//
 ///////////////////////
 //    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Glossy(Material::kGlossy), Vec3f(0.5, 0.5, 0.5), 5, Vec3f(20, 1, 50))));
-    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect), Vec3f(0, 0, 0), 4, Vec3f(30, 0, 20))));
-    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), Vec3f(1, 1, 1), 4, Vec3f(15, 0, 20))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Mirror(Material::kReflect), Vec3f(0, 0, 0), 4, Vec3f(20, 0, 20))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), Vec3f(1, 1, 1), 4, Vec3f(5, 0, 0))));
     
 //    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), Vec3f(0.9, 0.9, 1), 4, Vec3f(0, 0, 0))));
-    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), Vec3f(0.9, 0.9, 1), 4, Vec3f(20, 0, 35))));
+    objects.push_back(std::unique_ptr<Object>(new Sphere(xform1, new Diffuse(Material::kDiffuse), Vec3f(0.9, 0.9, 1), 4, Vec3f(10, 0, 25))));
 
     objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Diffuse(Material::kDiffuse), Vec3f(1, 1, 1), Vec3f(0, -4, 0), Vec3f(0, 10, 0))));
-    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect), Vec3f(0.5, 0.5, 0.5), Vec3f(0, 0, 0), Vec3f(1, 0, 0))));
+    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Diffuse(Material::kDiffuse), Vec3f(0.5, 0.7, 1.0), Vec3f(0, 0, -100), Vec3f(0, 0, 1))));
+    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect), Vec3f(0.5, 0.5, 0.5), Vec3f(-10, 0, 0), Vec3f(1, 0, 0))));
     
-//    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect), Vec3f(0.5, 0.5, 0.5), Vec3f(40, 0, 20), Vec3f(-1, 0, 0))));
-//    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect, Vec3f(1, 0, 0)), Vec3f(65, 0, 0), Vec3f(-1, 0, 0))));
+//    objects.push_back(std::unique_ptr<Object>(new Plane(Matrix44f::kIdentity, new Mirror(Material::kReflect), Vec3f(0.5, 0.7, 1.0), Vec3f(50, 0, 0), Vec3f(-1, 0, 0))));
+    
+//    objects.push_back(std::unique_ptr<Object>(new Plane(xform1, new Mirror(Material::kReflect), Vec3f(0.5, 0.5, 0.5), Vec3f(0, 50, 0), Vec3f(0, 1, 0))));
     
 
 //    TriangleMesh *mesh = loadPolyMeshFromFile("./cylinder.geo", Matrix44f::kIdentity, new Glossy(Material::kGlossy));
@@ -221,20 +221,21 @@ int main(int argc, char **argv)
     // setting up options
     Options options;
 //    options.fov = 36.87;
-    options.fov = 56.87;
+    options.fov = 96.87;
     options.width = 1024;
     options.height = 747;
 //    options.cameraToWorld = Matrix44f(0.999945, 0, 0.0104718, 0, 0.00104703, 0.994989, -0.0999803, 0, -0.0104193, 0.0999858, 0.994934, 0, -0.978596, 17.911879, 75.483369, 1);
 
-    Matrix44f test = camToWorld(Vec3f(5, 12, 100), Vec3f(10, 10, 1));
+    Matrix44f test = camToWorld(Vec3f(5, 12, 60), Vec3f(10, 10, 1));
     options.cameraToWorld = test;
     std::cout << options.cameraToWorld << std::endl;
     
 
     // finally, render
     lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, Vec3f(0, 10, -1), Vec3f(1, 1, 1), 1)));
-    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(0, 2, 20), Vec3f(1, 1, 1), 1)));
-    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(10, 10, 10), Vec3f(0.1, 0.5, 1), 1)));
+    lights.push_back(std::unique_ptr<Light>(new DistantLight(l2w, Vec3f(10, 20, -1), Vec3f(1, 1, 1), 1)));
+//    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(0, 2, 20), Vec3f(1, 1, 1), 1)));
+//    lights.push_back(std::unique_ptr<Light>(new PointLight(l2w, Vec3f(10, 10, 10), Vec3f(0.1, 0.5, 1), 1)));
     
     
     auto timeStart = std::chrono::high_resolution_clock::now();
